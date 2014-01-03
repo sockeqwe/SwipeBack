@@ -26,6 +26,8 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import com.hannesdorfmann.swipeback.transformer.DefaultSwipeBackTransformer;
+
 public abstract class SwipeBack extends ViewGroup {
 
     /**
@@ -388,6 +390,11 @@ public abstract class SwipeBack extends ViewGroup {
     protected boolean mDrawOverlay;
 
     /**
+     * The SwipeBackTransformer
+     */
+    protected SwipeBackTransformer mSwipeBackTransformer;
+
+    /**
      * Attaches the SwipeBack to the Activity.
      *
      * @param activity The activity that the SwipeBack will be attached to.
@@ -400,6 +407,17 @@ public abstract class SwipeBack extends ViewGroup {
     /**
      * Attaches the SwipeBack to the Activity.
      *
+     * @param activity The activity that the SwipeBack will be attached to.
+     * @param  transformer the transformer
+     * @return The created SwipeBack instance.
+     */
+    public static SwipeBack attach(Activity activity, SwipeBackTransformer transformer) {
+        return attach(activity, Type.BEHIND, transformer);
+    }
+
+    /**
+     * Attaches the SwipeBack to the Activity.
+     *
      * @param activity The activity the menu drawer will be attached to.
      * @param type     The {@link SwipeBack.Type} of the drawer.
      * @return The created SwipeBack instance.
@@ -407,6 +425,30 @@ public abstract class SwipeBack extends ViewGroup {
     public static SwipeBack attach(Activity activity, Type type) {
         return attach(activity, type, Position.START);
     }
+
+    /**
+     * Attaches the SwipeBack to the Activity.
+     *
+     * @param activity The activity the menu drawer will be attached to.
+     * @param type     The {@link SwipeBack.Type} of the drawer.
+     * @return The created SwipeBack instance.
+     */
+    public static SwipeBack attach(Activity activity, Type type, SwipeBackTransformer transformer) {
+        return attach(activity, type, Position.START);
+    }
+
+
+    /**
+     * Attaches the SwipeBack to the Activity.
+     *
+     * @param activity The activity the menu drawer will be attached to.
+     * @param position Where to position the menu.
+     * @return The created SwipeBack instance.
+     */
+    public static SwipeBack attach(Activity activity, Position position, SwipeBackTransformer transformer) {
+        return attach(activity, Type.BEHIND, position, transformer);
+    }
+
 
     /**
      * Attaches the SwipeBack to the Activity.
@@ -425,11 +467,25 @@ public abstract class SwipeBack extends ViewGroup {
      * @param activity The activity the menu drawer will be attached to.
      * @param type     The {@link SwipeBack.Type} of the drawer.
      * @param position Where to position the menu.
+     * @param transformer
      * @return The created SwipeBack instance.
      */
-    public static SwipeBack attach(Activity activity, Type type, Position position) {
-        return attach(activity, type, position, MENU_DRAG_CONTENT);
+    public static SwipeBack attach(Activity activity, Type type, Position position, SwipeBackTransformer transformer) {
+        return attach(activity, type, position, MENU_DRAG_WINDOW, transformer);
     }
+
+
+    /**
+     * Attaches the SwipeBack to the Activity
+     * @param activity
+     * @param type
+     * @param position
+     * @return The created SwipeBack instance
+     */
+    public static SwipeBack attach(Activity activity, Type type, Position position) {
+        return attach(activity, type, position, MENU_DRAG_WINDOW, new DefaultSwipeBackTransformer());
+    }
+
 
     /**
      * Attaches the SwipeBack to the Activity.
@@ -441,9 +497,11 @@ public abstract class SwipeBack extends ViewGroup {
      *                 or {@link SwipeBack#MENU_DRAG_WINDOW}.
      * @return The created SwipeBack instance.
      */
-    public static SwipeBack attach(Activity activity, Type type, Position position, int dragMode) {
-        SwipeBack menuDrawer = createMenuDrawer(activity, dragMode, position, type);
+    public static SwipeBack attach(Activity activity, Type type, Position position, int dragMode, SwipeBackTransformer transformer) {
+
+        SwipeBack menuDrawer = createMenuDrawer(activity, dragMode, position, type, transformer);
         menuDrawer.setId(R.id.md__drawer);
+
 
         switch (dragMode) {
             case SwipeBack.MENU_DRAG_CONTENT:
@@ -458,26 +516,53 @@ public abstract class SwipeBack extends ViewGroup {
                 throw new RuntimeException("Unknown menu mode: " + dragMode);
         }
 
+
+
+
+
         return menuDrawer;
     }
 
     /**
      * Constructs the appropriate SwipeBack based on the position.
      */
-    private static SwipeBack createMenuDrawer(Activity activity, int dragMode, Position position, Type type) {
-        SwipeBack drawer;
+    private static SwipeBack createMenuDrawer(Activity activity, int dragMode, Position position, Type type, SwipeBackTransformer transformer) {
+        SwipeBack drawerHelper;
 
        if (type == Type.OVERLAY) {
-            drawer = new OverlaySwipeBack(activity, dragMode);
+           drawerHelper = new OverlaySwipeBack(activity, dragMode);
 
 
         } else {
-            drawer = new SlidingSwipeBack(activity, dragMode);
+           drawerHelper = new SlidingSwipeBack(activity, dragMode);
 
         }
 
+
+        final SwipeBack drawer = drawerHelper;
+
         drawer.mDragMode = dragMode;
         drawer.setPosition(position);
+        drawer.mSwipeBackTransformer = transformer;
+
+
+        drawer.mOnDrawerStateChangeListener = new OnDrawerStateChangeListener() {
+            @Override
+            public void onDrawerStateChange(int oldState, int newState) {
+
+                if (STATE_OPEN == newState){
+                    drawer.mSwipeBackTransformer.onSwipeBackCompleted(drawer.mActivity);
+                } else if (STATE_CLOSED == newState){
+                    drawer.mSwipeBackTransformer.onSwipeBackReseted(drawer.mActivity);
+                }
+
+            }
+
+            @Override
+            public void onDrawerSlide(float openRatio, int offsetPixels) {
+
+            }
+        };
 
         return drawer;
     }
@@ -539,7 +624,7 @@ public abstract class SwipeBack extends ViewGroup {
         final Drawable contentBackground = a.getDrawable(R.styleable.SwipeBack_mdContentBackground);
         final Drawable menuBackground = a.getDrawable(R.styleable.SwipeBack_mdMenuBackground);
 
-        mMenuSize = a.getDimensionPixelSize(R.styleable.SwipeBack_mdMenuSize, dpToPx(240));
+        mMenuSize = a.getDimensionPixelSize(R.styleable.SwipeBack_mdMenuSize, dpToPx(120));
 
         final int indicatorResId = a.getResourceId(R.styleable.SwipeBack_mdActiveIndicator, 0);
         if (indicatorResId != 0) {
@@ -1112,15 +1197,6 @@ public abstract class SwipeBack extends ViewGroup {
      */
     public int getDrawerState() {
         return mDrawerState;
-    }
-
-    /**
-     * Register a callback to be invoked when the drawer state changes.
-     *
-     * @param listener The callback that will run.
-     */
-    public void setOnDrawerStateChangeListener(OnDrawerStateChangeListener listener) {
-        mOnDrawerStateChangeListener = listener;
     }
 
     /**

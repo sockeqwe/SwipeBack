@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- duration time for slide in animations -->
+    <integer name="slide_in_duration">200</integer>
+    <integer name="slide_out_duration">400</integer>
+
+    <integer name="back_slide_out_duration">400</integer>
+    <integer name="back_slide_in_duration">200</integer>
+</resources>

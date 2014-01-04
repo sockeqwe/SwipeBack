@@ -37,6 +37,9 @@
 
         <!-- Whether an overlay should be drawn as the swipe back view  is opened and closed -->
         <attr name="sbDrawOverlay" format="boolean" />
+        
+        <!-- The transformer that should be -->
+        <attr name="sbTransformer" format="string" />
 
         <!-- The position of the drawer -->
         <attr name="sbSwipeBackPosition" format="enum">

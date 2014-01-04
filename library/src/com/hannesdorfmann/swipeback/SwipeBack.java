@@ -498,25 +498,48 @@ public abstract class SwipeBack extends ViewGroup {
 		drawer.mSwipeBackTransformer = transformer;
 
 
-		drawer.mOnDrawerStateChangeListener = new OnDrawerStateChangeListener() {
+		drawer.initSwipeListener();
+
+		return drawer;
+	}
+
+	private void initSwipeListener() {
+		mOnDrawerStateChangeListener = new OnDrawerStateChangeListener() {
 			@Override
 			public void onDrawerStateChange(int oldState, int newState) {
 
-				if (STATE_OPEN == newState){
-					drawer.mSwipeBackTransformer.onSwipeBackCompleted(drawer, drawer.mActivity);
-				} else if (STATE_CLOSED == newState){
-					drawer.mSwipeBackTransformer.onSwipeBackReseted(drawer, drawer.mActivity);
+				if (mSwipeBackTransformer != null) {
+
+					if (STATE_OPEN == newState){
+						mSwipeBackTransformer.onSwipeBackCompleted(
+								SwipeBack.this, mActivity);
+					} else if (STATE_CLOSED == newState){
+						mSwipeBackTransformer.onSwipeBackReseted(
+								SwipeBack.this, mActivity);
+					}
+
+				} else {
+					Log.w(TAG, "Internal state changed, but no "
+							+ SwipeBackTransformer.class.getSimpleName()
+							+ " is registered");
 				}
 
 			}
 
 			@Override
 			public void onDrawerSlide(float openRatio, int offsetPixels) {
-				drawer.mSwipeBackTransformer.onSwiping(drawer, openRatio, offsetPixels);
+
+				if (mSwipeBackTransformer != null) {
+					mSwipeBackTransformer.onSwiping(SwipeBack.this,
+							openRatio, offsetPixels);
+				} else {
+					Log.w(TAG,
+							"Swiping, but no "
+									+ SwipeBackTransformer.class.getSimpleName()
+									+ " is registered");
+				}
 			}
 		};
-
-		return drawer;
 	}
 
 	/**
@@ -605,6 +628,42 @@ public abstract class SwipeBack extends ViewGroup {
 		final int position = a.getInt(R.styleable.SwipeBack_sbSwipeBackPosition, 0);
 		setPosition(Position.fromValue(position));
 
+		String transformerClassName = a
+				.getString(R.styleable.SwipeBack_sbTransformer);
+
+		if (transformerClassName == null) {
+			try {
+				mSwipeBackTransformer = (SwipeBackTransformer) Class.forName(
+						transformerClassName).newInstance();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+				throw new RuntimeException(
+						"Could not instantiate an object of "
+								+ transformerClassName
+								+ ". An empty constructor is needed. If your "
+								+ SwipeBackTransformer.class.getSimpleName()
+								+ " implementation can not provide an empty constructor, than use the programaticall way to instead of xml");
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+				throw new RuntimeException(
+						"Could not instantiate an object of "
+								+ transformerClassName
+								+ ". An empty constructor is needed. If your "
+								+ SwipeBackTransformer.class.getSimpleName()
+								+ " implementation can not provide an empty constructor, than use the programaticall way to instead of xml");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				throw new RuntimeException(
+						"Could not instantiate an object of "
+								+ transformerClassName
+								+ ". An empty constructor is needed. If your "
+								+ SwipeBackTransformer.class.getSimpleName()
+								+ " implementation can not provide an empty constructor, than use the programaticall way to instead of xml");
+			}
+		} else {
+			mSwipeBackTransformer = new DefaultSwipeBackTransformer();
+		}
+
 		a.recycle();
 
 		mMenuContainer = new NoClickThroughFrameLayout(context);
@@ -616,6 +675,8 @@ public abstract class SwipeBack extends ViewGroup {
 		mContentContainer.setBackgroundDrawable(contentBackground);
 
 		mMenuOverlay = new ColorDrawable(0xFF000000);
+
+		initSwipeListener();
 
 	}
 
@@ -1139,6 +1200,8 @@ public abstract class SwipeBack extends ViewGroup {
 		mMenuView = LayoutInflater.from(getContext()).inflate(layoutResId, mMenuContainer, false);
 		mMenuContainer.addView(mMenuView);
 
+		notifyMenuViewCreated(mMenuView);
+
 		return this;
 	}
 
@@ -1162,7 +1225,23 @@ public abstract class SwipeBack extends ViewGroup {
 		mMenuView = view;
 		mMenuContainer.removeAllViews();
 		mMenuContainer.addView(view, params);
+
+		notifyMenuViewCreated(mMenuView);
+
 		return this;
+	}
+
+	/**
+	 * Notify the {@link SwipeBackTransformer} that the menu
+	 * 
+	 * @param view
+	 */
+	private void notifyMenuViewCreated(View view) {
+
+		if (mSwipeBackTransformer != null) {
+			mSwipeBackTransformer.onSwipeBackViewCreated(this, mActivity, view);
+		}
+
 	}
 
 	/**

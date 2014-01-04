@@ -479,6 +479,7 @@ public abstract class SwipeBack extends ViewGroup {
 	 * Constructs the appropriate SwipeBack based on the position.
 	 */
 	private static SwipeBack createSwipeBack(Activity activity, int dragMode, Position position, Type type, SwipeBackTransformer transformer) {
+
 		SwipeBack drawerHelper;
 
 		if (type == Type.OVERLAY) {
@@ -631,7 +632,8 @@ public abstract class SwipeBack extends ViewGroup {
 		String transformerClassName = a
 				.getString(R.styleable.SwipeBack_sbTransformer);
 
-		if (transformerClassName == null) {
+
+		if (transformerClassName != null) {
 			try {
 				mSwipeBackTransformer = (SwipeBackTransformer) Class.forName(
 						transformerClassName).newInstance();

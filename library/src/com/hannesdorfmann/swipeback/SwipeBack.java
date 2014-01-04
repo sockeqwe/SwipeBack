@@ -551,16 +551,26 @@ public abstract class SwipeBack extends ViewGroup {
             public void onDrawerStateChange(int oldState, int newState) {
 
                 if (STATE_OPEN == newState){
-                    drawer.mSwipeBackTransformer.onSwipeBackCompleted(drawer.mActivity);
+                    drawer.mSwipeBackTransformer.onSwipeBackCompleted(drawer, drawer.mActivity);
                 } else if (STATE_CLOSED == newState){
-                    drawer.mSwipeBackTransformer.onSwipeBackReseted(drawer.mActivity);
+                    drawer.mSwipeBackTransformer.onSwipeBackReseted(drawer, drawer.mActivity);
                 }
 
             }
 
             @Override
             public void onDrawerSlide(float openRatio, int offsetPixels) {
+               int internalState = drawer.getState();
 
+                Log.d(TAG, "internal state "+internalState);
+
+               int state = SwipeBackTransformer.STATE_OPENING;
+
+               if (internalState == STATE_CLOSING)
+                   state = SwipeBackTransformer.STATE_CLOSING;
+
+
+               drawer.mSwipeBackTransformer.onSwiping(drawer, openRatio, offsetPixels, state);
             }
         };
 
@@ -992,8 +1002,8 @@ public abstract class SwipeBack extends ViewGroup {
     /**
      * Animates the menu open.
      */
-    public void openMenu() {
-        openMenu(true);
+    public void open() {
+        open(true);
     }
 
     /**
@@ -1001,42 +1011,42 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param animate Whether open/close should be animated.
      */
-    public abstract void openMenu(boolean animate);
+    public abstract void open(boolean animate);
 
     /**
      * Animates the menu closed.
      */
     public void closeMenu() {
-        closeMenu(true);
+        close(true);
     }
 
     /**
-     * Closes the menu.
+     * Closes the swipe back.
      *
      * @param animate Whether open/close should be animated.
      */
-    public abstract void closeMenu(boolean animate);
+    public abstract void close(boolean animate);
 
     /**
-     * Indicates whether the menu is currently visible.
+     * Indicates whether the swipe back is currently visible.
      *
      * @return True if the menu is open, false otherwise.
      */
-    public abstract boolean isMenuVisible();
+    public abstract boolean isVisible();
 
     /**
-     * Set the size of the menu drawer when open.
+     * Set the size of the swipe back when open.
      *
      * @param size The size of the menu.
      */
-    public abstract void setMenuSize(int size);
+    public abstract void setSize(int size);
 
     /**
      * Returns the size of the menu.
      *
      * @return The size of the menu.
      */
-    public int getMenuSize() {
+    public int getSize() {
         return mMenuSize;
     }
 
@@ -1195,7 +1205,7 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @return The state of the drawer.
      */
-    public int getDrawerState() {
+    public int getState() {
         return mDrawerState;
     }
 
@@ -1240,7 +1250,7 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param color The color of the drop shadow.
      */
-    public void setDropShadowColor(int color) {
+    public SwipeBack setDropShadowColor(int color) {
         GradientDrawable.Orientation orientation = getDropShadowOrientation();
 
         final int endColor = color & 0x00FFFFFF;
@@ -1250,6 +1260,8 @@ public abstract class SwipeBack extends ViewGroup {
                         endColor,
                 });
         invalidate();
+
+        return this;
     }
 
     /**
@@ -1257,10 +1269,11 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param drawable The drawable of the drop shadow.
      */
-    public void setDropShadow(Drawable drawable) {
+    public SwipeBack setDropShadow(Drawable drawable) {
         mDropShadowDrawable = drawable;
         mCustomDropShadow = drawable != null;
         invalidate();
+        return this;
     }
 
     /**
@@ -1268,8 +1281,8 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param resId The resource identifier of the the drawable.
      */
-    public void setDropShadow(int resId) {
-        setDropShadow(getResources().getDrawable(resId));
+    public SwipeBack setDropShadow(int resId) {
+        return setDropShadow(getResources().getDrawable(resId));
     }
 
     /**
@@ -1284,60 +1297,65 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param size The size of the drop shadow in px.
      */
-    public void setDropShadowSize(int size) {
+    public SwipeBack setDropShadowSize(int size) {
         mDropShadowSize = size;
         invalidate();
+
+        return this;
     }
 
     /**
-     * Animates the drawer slightly open until the user opens the drawer.
+     * Animates the swipe back view slightly open until the user opens it completely.
      */
-    public abstract void peekDrawer();
+    public abstract SwipeBack peekSwipeBack();
 
     /**
-     * Animates the drawer slightly open. If delay is larger than 0, this happens until the user opens the drawer.
+     * Animates the swipe back view slightly open. If delay is larger than 0, this happens until the user opens the drawer.
      *
      * @param delay The delay (in milliseconds) between each run of the animation. If 0, this animation is only run
      *              once.
      */
-    public abstract void peekDrawer(long delay);
+    public abstract SwipeBack peekSwipeBack(long delay);
 
     /**
-     * Animates the drawer slightly open. If delay is larger than 0, this happens until the user opens the drawer.
+     * Animates the swipe back view slightly open. If delay is larger than 0, this happens until the user opens the drawer.
      *
      * @param startDelay The delay (in milliseconds) until the animation is first run.
      * @param delay      The delay (in milliseconds) between each run of the animation. If 0, this animation is only run
      *                   once.
      */
-    public abstract void peekDrawer(long startDelay, long delay);
+    public abstract SwipeBack peekSwipeBack(long startDelay, long delay);
 
     /**
      * Enables or disables the user of {@link android.view.View#LAYER_TYPE_HARDWARE} when animations views.
      *
      * @param enabled Whether hardware layers are enabled.
      */
-    public abstract void setHardwareLayerEnabled(boolean enabled);
+    public abstract SwipeBack setHardwareLayerEnabled(boolean enabled);
 
     /**
      * Sets the maximum duration of open/close animations.
      *
      * @param duration The maximum duration in milliseconds.
      */
-    public void setMaxAnimationDuration(int duration) {
+    public SwipeBack setMaxAnimationDuration(int duration) {
+
         mMaxAnimationDuration = duration;
+        return this;
     }
 
     /**
-     * Sets whether an overlay should be drawn when sliding the drawer.
+     * Sets whether an overlay should be drawn when sliding the swipe back view.
      *
      * @param drawOverlay Whether an overlay should be drawn when sliding the drawer.
      */
-    public void setDrawOverlay(boolean drawOverlay) {
+    public SwipeBack setDrawOverlay(boolean drawOverlay) {
         mDrawOverlay = drawOverlay;
+        return this;
     }
 
     /**
-     * Gets whether an overlay is drawn when sliding the drawer.
+     * Gets whether an overlay is drawn when sliding the swipe back view.
      *
      * @return Whether an overlay is drawn when sliding the drawer.
      */
@@ -1349,11 +1367,11 @@ public abstract class SwipeBack extends ViewGroup {
 
 
     /**
-     * Returns the ViewGroup used as a parent for the menu view.
+     * Returns the ViewGroup used as a parent for the swipe back view.
      *
      * @return The menu view's parent.
      */
-    public ViewGroup getMenuContainer() {
+    public ViewGroup getSwipeBackContainer() {
         return mMenuContainer;
     }
 
@@ -1375,10 +1393,12 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param layoutResId Resource ID to be inflated.
      */
-    public void setMenuView(int layoutResId) {
+    public SwipeBack setMenuView(int layoutResId) {
         mMenuContainer.removeAllViews();
         mMenuView = LayoutInflater.from(getContext()).inflate(layoutResId, mMenuContainer, false);
         mMenuContainer.addView(mMenuView);
+
+        return this;
     }
 
     /**
@@ -1386,8 +1406,9 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param view The menu view.
      */
-    public void setMenuView(View view) {
+    public SwipeBack setMenuView(View view) {
         setMenuView(view, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        return this;
     }
 
     /**
@@ -1396,10 +1417,11 @@ public abstract class SwipeBack extends ViewGroup {
      * @param view   The menu view.
      * @param params Layout parameters for the view.
      */
-    public void setMenuView(View view, LayoutParams params) {
+    public SwipeBack setMenuView(View view, LayoutParams params) {
         mMenuView = view;
         mMenuContainer.removeAllViews();
         mMenuContainer.addView(view, params);
+        return this;
     }
 
     /**
@@ -1416,7 +1438,7 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param layoutResId Resource ID to be inflated.
      */
-    public void setContentView(int layoutResId) {
+    public SwipeBack setContentView(int layoutResId) {
         switch (mDragMode) {
             case SwipeBack.MENU_DRAG_CONTENT:
                 mContentContainer.removeAllViews();
@@ -1427,6 +1449,8 @@ public abstract class SwipeBack extends ViewGroup {
                 mActivity.setContentView(layoutResId);
                 break;
         }
+
+        return this;
     }
 
     /**
@@ -1444,7 +1468,7 @@ public abstract class SwipeBack extends ViewGroup {
      * @param view   The desired content to display.
      * @param params Layout parameters for the view.
      */
-    public void setContentView(View view, LayoutParams params) {
+    public SwipeBack setContentView(View view, LayoutParams params) {
         switch (mDragMode) {
             case SwipeBack.MENU_DRAG_CONTENT:
                 mContentContainer.removeAllViews();
@@ -1455,18 +1479,22 @@ public abstract class SwipeBack extends ViewGroup {
                 mActivity.setContentView(view, params);
                 break;
         }
+
+        return this;
     }
 
-    protected void setDrawerState(int state) {
+    protected SwipeBack setDrawerState(int state) {
         if (state != mDrawerState) {
             final int oldState = mDrawerState;
             mDrawerState = state;
             if (mOnDrawerStateChangeListener != null) mOnDrawerStateChangeListener.onDrawerStateChange(oldState, state);
             if (DEBUG) logDrawerState(state);
         }
+
+        return this;
     }
 
-    protected void logDrawerState(int state) {
+    protected SwipeBack logDrawerState(int state) {
         switch (state) {
             case STATE_CLOSED:
                 Log.d(TAG, "[DrawerState] STATE_CLOSED");
@@ -1491,6 +1519,8 @@ public abstract class SwipeBack extends ViewGroup {
             default:
                 Log.d(TAG, "[DrawerState] Unknown: " + state);
         }
+
+        return this;
     }
 
     /**
@@ -1504,14 +1534,14 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param mode The touch mode.
      */
-    public abstract void setTouchMode(int mode);
+    public abstract SwipeBack setTouchMode(int mode);
 
     /**
      * Sets the size of the touch bezel.
      *
      * @param size The touch bezel size in px.
      */
-    public abstract void setTouchBezelSize(int size);
+    public abstract SwipeBack setTouchBezelSize(int size);
 
     /**
      * Returns the size of the touch bezel in px.

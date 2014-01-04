@@ -95,7 +95,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
     }
 
     @Override
-    public void openMenu(boolean animate) {
+    public void open(boolean animate) {
         int animateTo = 0;
         switch (getPosition()) {
             case LEFT:
@@ -113,7 +113,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
     }
 
     @Override
-    public void closeMenu(boolean animate) {
+    public void close(boolean animate) {
         animateOffsetTo(0, 0, animate);
     }
 
@@ -318,7 +318,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
         final int width = MeasureSpec.getSize(widthMeasureSpec);
         final int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        if (mOffsetPixels == -1) openMenu(false);
+        if (mOffsetPixels == -1) open(false);
 
         int menuWidthMeasureSpec;
         int menuHeightMeasureSpec;
@@ -541,7 +541,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
             }
 
             if (Math.abs(mOffsetPixels) > mMenuSize / 2) {
-                openMenu();
+                open();
             } else {
                 closeMenu();
             }
@@ -613,7 +613,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
                     mIsDragging = false;
                     mActivePointerId = INVALID_POINTER;
                     endDrag();
-                    closeMenu(true);
+                    close(true);
                     return false;
                 }
 
@@ -699,7 +699,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
                     mIsDragging = false;
                     mActivePointerId = INVALID_POINTER;
                     endDrag();
-                    closeMenu(true);
+                    close(true);
                     return false;
                 }
 

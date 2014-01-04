@@ -15,7 +15,10 @@ public class SwipeBackActivity extends ActionBarActivity{
     public void onCreate(Bundle saved){
         super.onCreate(saved);
 
-        SwipeBack.attach(this, Position.LEFT);
+        SwipeBack.attach(this, Position.LEFT)
+                .setDrawOverlay(false)
+                .peekSwipeBack(2000);
+
 
 
     }

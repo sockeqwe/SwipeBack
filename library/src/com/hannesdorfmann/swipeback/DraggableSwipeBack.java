@@ -33,12 +33,12 @@ public abstract class DraggableSwipeBack extends SwipeBack {
     protected static final int MAX_MENU_OVERLAY_ALPHA = 185;
 
     /**
-     * Default delay from {@link #peekDrawer()} is called until first animation is run.
+     * Default delay from {@link #peekSwipeBack()} is called until first animation is run.
      */
     private static final long DEFAULT_PEEK_START_DELAY = 5000;
 
     /**
-     * Default delay between each subsequent animation, after {@link #peekDrawer()} has been called.
+     * Default delay between each subsequent animation, after {@link #peekSwipeBack()} has been called.
      */
     private static final long DEFAULT_PEEK_DELAY = 10000;
 
@@ -110,7 +110,7 @@ public abstract class DraggableSwipeBack extends SwipeBack {
     protected float mLastMotionY = -1;
 
     /**
-     * Default delay between each subsequent animation, after {@link #peekDrawer()} has been called.
+     * Default delay between each subsequent animation, after {@link #peekSwipeBack()} has been called.
      */
     protected long mPeekDelay;
 
@@ -140,7 +140,7 @@ public abstract class DraggableSwipeBack extends SwipeBack {
     protected int mCloseEnough;
 
     /**
-     * Runnable used for first call to {@link #startPeek()} after {@link #peekDrawer()}  has been called.
+     * Runnable used for first call to {@link #startPeek()} after {@link #peekSwipeBack()}  has been called.
      */
     private Runnable mPeekStartRunnable;
 
@@ -186,17 +186,17 @@ public abstract class DraggableSwipeBack extends SwipeBack {
 
     public void toggleMenu(boolean animate) {
         if (mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING) {
-            closeMenu(animate);
+            close(animate);
         } else if (mDrawerState == STATE_CLOSED || mDrawerState == STATE_CLOSING) {
-            openMenu(animate);
+            open(animate);
         }
     }
 
-    public boolean isMenuVisible() {
+    public boolean isVisible() {
         return mMenuVisible;
     }
 
-    public void setMenuSize(final int size) {
+    public void setSize(final int size) {
         mMenuSize = size;
         if (mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING) {
             setOffsetPixels(mMenuSize);
@@ -217,15 +217,17 @@ public abstract class DraggableSwipeBack extends SwipeBack {
         return mOffsetMenu;
     }
 
-    public void peekDrawer() {
-        peekDrawer(DEFAULT_PEEK_START_DELAY, DEFAULT_PEEK_DELAY);
+    public SwipeBack peekSwipeBack() {
+        peekSwipeBack(DEFAULT_PEEK_START_DELAY, DEFAULT_PEEK_DELAY);
+        return this;
     }
 
-    public void peekDrawer(long delay) {
-        peekDrawer(DEFAULT_PEEK_START_DELAY, delay);
+    public SwipeBack peekSwipeBack(long delay) {
+        peekSwipeBack(DEFAULT_PEEK_START_DELAY, delay);
+        return this;
     }
 
-    public void peekDrawer(final long startDelay, final long delay) {
+    public SwipeBack peekSwipeBack(final long startDelay, final long delay) {
         if (startDelay < 0) {
             throw new IllegalArgumentException("startDelay must be zero or larger.");
         }
@@ -244,30 +246,37 @@ public abstract class DraggableSwipeBack extends SwipeBack {
             }
         };
         postDelayed(mPeekStartRunnable, startDelay);
+
+        return this;
     }
 
-    public void setHardwareLayerEnabled(boolean enabled) {
+    public SwipeBack setHardwareLayerEnabled(boolean enabled) {
         if (enabled != mHardwareLayersEnabled) {
             mHardwareLayersEnabled = enabled;
             mMenuContainer.setHardwareLayersEnabled(enabled);
             mContentContainer.setHardwareLayersEnabled(enabled);
             stopLayerTranslation();
         }
+
+        return this;
     }
 
     public int getTouchMode() {
         return mTouchMode;
     }
 
-    public void setTouchMode(int mode) {
+    public SwipeBack setTouchMode(int mode) {
         if (mTouchMode != mode) {
             mTouchMode = mode;
             updateTouchAreaSize();
         }
+
+        return this;
     }
 
-    public void setTouchBezelSize(int size) {
+    public SwipeBack setTouchBezelSize(int size) {
         mTouchBezelSize = size;
+        return this;
     }
 
     public int getTouchBezelSize() {
@@ -613,7 +622,7 @@ public abstract class DraggableSwipeBack extends SwipeBack {
         Bundle state = (Bundle) in;
         final boolean menuOpen = state.getBoolean(STATE_MENU_VISIBLE);
         if (menuOpen) {
-            openMenu(false);
+            open(false);
         } else {
             setOffsetPixels(0);
         }

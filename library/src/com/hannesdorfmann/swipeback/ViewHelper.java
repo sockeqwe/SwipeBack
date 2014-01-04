@@ -1,8 +1,10 @@
 package com.hannesdorfmann.swipeback;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.view.View;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 final class ViewHelper {
 
     private ViewHelper() {

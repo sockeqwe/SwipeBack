@@ -28,8 +28,6 @@
 
         style="@style/swipeBackText"
         android:layout_centerInParent="true"
-        android:layout_marginTop="-40dp"
-
         android:text="@string/swipeback_back"
         />
 

@@ -207,35 +207,35 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
     @Override
     protected void updateDropShadowRect() {
         final float openRatio = Math.abs(mOffsetPixels) / mMenuSize;
-        final int dropShadowSize = (int) (mDropShadowSize * openRatio);
+        final int dropShadowSize = (int) (mDividerSize * openRatio);
 
         switch (getPosition()) {
             case LEFT:
-                mDropShadowRect.top = 0;
-                mDropShadowRect.bottom = getHeight();
-                mDropShadowRect.left = ViewHelper.getRight(mMenuContainer);
-                mDropShadowRect.right = mDropShadowRect.left + dropShadowSize;
+                mDividerRect.top = 0;
+                mDividerRect.bottom = getHeight();
+                mDividerRect.left = ViewHelper.getRight(mMenuContainer);
+                mDividerRect.right = mDividerRect.left + dropShadowSize;
                 break;
 
             case TOP:
-                mDropShadowRect.left = 0;
-                mDropShadowRect.right = getWidth();
-                mDropShadowRect.top = ViewHelper.getBottom(mMenuContainer);
-                mDropShadowRect.bottom = mDropShadowRect.top + dropShadowSize;
+                mDividerRect.left = 0;
+                mDividerRect.right = getWidth();
+                mDividerRect.top = ViewHelper.getBottom(mMenuContainer);
+                mDividerRect.bottom = mDividerRect.top + dropShadowSize;
                 break;
 
             case RIGHT:
-                mDropShadowRect.top = 0;
-                mDropShadowRect.bottom = getHeight();
-                mDropShadowRect.right = ViewHelper.getLeft(mMenuContainer);
-                mDropShadowRect.left = mDropShadowRect.right - dropShadowSize;
+                mDividerRect.top = 0;
+                mDividerRect.bottom = getHeight();
+                mDividerRect.right = ViewHelper.getLeft(mMenuContainer);
+                mDividerRect.left = mDividerRect.right - dropShadowSize;
                 break;
 
             case BOTTOM:
-                mDropShadowRect.left = 0;
-                mDropShadowRect.right = getWidth();
-                mDropShadowRect.bottom = ViewHelper.getTop(mMenuContainer);
-                mDropShadowRect.top = mDropShadowRect.bottom - dropShadowSize;
+                mDividerRect.left = 0;
+                mDividerRect.right = getWidth();
+                mDividerRect.bottom = ViewHelper.getTop(mMenuContainer);
+                mDividerRect.top = mDividerRect.bottom - dropShadowSize;
                 break;
         }
     }

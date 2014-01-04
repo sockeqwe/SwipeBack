@@ -2,10 +2,10 @@
 
     <style name="Widget" />
 
-    <!-- Base theme for the menu drawer. -->
-    <style name="Widget.MenuDrawer">
-        <item name="mdMenuBackground">@color/md__defaultBackground</item>
-        <item name="mdContentBackground">?android:attr/windowBackground</item>
+    <!-- Base theme for Swipe Back. -->
+    <style name="Widget.SwipeBack">
+        <item name="sbSwipeBackBackground">@color/sb__defaultBackground</item>
+        <item name="sbContentBackground">?android:attr/windowBackground</item>
     </style>
 
 </resources>

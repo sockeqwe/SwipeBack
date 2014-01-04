@@ -7,39 +7,39 @@
     <declare-styleable name="SwipeBack">
 
         <!-- Drawable to use for the background of the content. -->
-        <attr name="mdContentBackground" format="reference" />
+        <attr name="sbContentBackground" format="reference" />
 
-        <!-- Drawable to use for the background of the menu. -->
-        <attr name="mdMenuBackground" format="reference" />
+        <!-- Drawable to use for the background of the swipe back view. -->
+        <attr name="sbSwipeBackBackground" format="reference" />
 
-        <!-- The size of the menu. -->
-        <attr name="mdMenuSize" format="dimension" />
+        <!-- The size of the swipe back view. -->
+        <attr name="sbSwipeBackSize" format="dimension" />
 
-        <!-- Defines whether the content will have a dropshadow onto the menu. Default is true. -->
-        <attr name="mdDropShadowEnabled" format="boolean" />
+        <!-- Defines whether there will be a divider drawn between content and the swipe back view. Default is true. -->
+        <attr name="sbDividerEnabled" format="boolean" />
 
-        <!-- The size of the drop shadow. Default is 6dp -->
-        <attr name="mdDropShadowSize" format="dimension" />
+        <!-- The size of the divider. Default is 6dp -->
+        <attr name="sbDividerSize" format="dimension" />
 
-        <!-- The color of the drop shadow. Default is #FF000000. -->
-        <attr name="mdDropShadowColor" format="color" />
+        <!-- The color of the divider as per default a shadow (gradient) drawable will be created. Default is #FF000000. -->
+        <attr name="sbDividerAsShadowColor" format="color" />
 
-        <!-- Drawable used for the drop shadow. -->
-        <attr name="mdDropShadow" format="reference" />
+        <!-- Drawable used as divider. -->
+        <attr name="sbDivider" format="reference" />
 
         <!-- The touch bezel size. -->
-        <attr name="mdTouchBezelSize" format="dimension" />
+        <attr name="sbBezelSize" format="dimension" />
 
 
         <!-- The maximum animation duration -->
-        <attr name="mdMaxAnimationDuration" format="integer" />
+        <attr name="sbMaxAnimationDuration" format="integer" />
 
 
-        <!-- Whether an overlay should be drawn as the drawer is opened and closed -->
-        <attr name="mdDrawOverlay" format="boolean" />
+        <!-- Whether an overlay should be drawn as the swipe back view  is opened and closed -->
+        <attr name="sbDrawOverlay" format="boolean" />
 
         <!-- The position of the drawer -->
-        <attr name="mdPosition" format="enum">
+        <attr name="sbSwipeBackPosition" format="enum">
             <enum name="left" value="0" />
             <enum name="top" value="1" />
             <enum name="right" value="2" />

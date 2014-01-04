@@ -190,26 +190,26 @@ public abstract class SwipeBack extends ViewGroup {
     protected Drawable mMenuOverlay;
 
     /**
-     * Defines whether the drop shadow is enabled.
+     * Defines if the divider is enabled (will be drawn)
      */
-    protected boolean mDropShadowEnabled;
+    protected boolean mDividerEnabled;
 
     /**
-     * The color of the drop shadow.
+     * The color of the shadow that will be used as divider .
      */
-    protected int mDropShadowColor;
+    protected int mDividerAsShadowColor;
 
     /**
-     * Drawable used as content drop shadow onto the menu.
+     * Drawable used as content to swipe back view divider.
      */
-    protected Drawable mDropShadowDrawable;
+    protected Drawable mDividerDrawable;
 
-    private boolean mCustomDropShadow;
+    private boolean mCustomDivider;
 
     /**
-     * The size of the content drop shadow.
+     * The size (width) of the content to swipe back view divider.
      */
-    protected int mDropShadowSize;
+    protected int mDividerSize;
 
     /**
      * The currently active view.
@@ -321,8 +321,6 @@ public abstract class SwipeBack extends ViewGroup {
      */
     protected OnInterceptMoveEventListener mOnInterceptMoveEventListener;
 
-
-
     /**
      * The position of the drawer.
      */
@@ -334,7 +332,7 @@ public abstract class SwipeBack extends ViewGroup {
 
     protected boolean mIsStatic = false;
 
-    protected final Rect mDropShadowRect = new Rect();
+    protected final Rect mDividerRect = new Rect();
 
     /**
      * Current offset.
@@ -456,7 +454,7 @@ public abstract class SwipeBack extends ViewGroup {
      */
     public static SwipeBack attach(Activity activity, Type type, Position position, int dragMode, SwipeBackTransformer transformer) {
 
-        SwipeBack menuDrawer = createMenuDrawer(activity, dragMode, position, type, transformer);
+        SwipeBack menuDrawer = createSwipeBack(activity, dragMode, position, type, transformer);
         menuDrawer.setId(R.id.md__drawer);
 
 
@@ -474,16 +472,13 @@ public abstract class SwipeBack extends ViewGroup {
         }
 
 
-
-
-
         return menuDrawer;
     }
 
     /**
      * Constructs the appropriate SwipeBack based on the position.
      */
-    private static SwipeBack createMenuDrawer(Activity activity, int dragMode, Position position, Type type, SwipeBackTransformer transformer) {
+    private static SwipeBack createSwipeBack(Activity activity, int dragMode, Position position, Type type, SwipeBackTransformer transformer) {
         SwipeBack drawerHelper;
 
        if (type == Type.OVERLAY) {
@@ -576,44 +571,44 @@ public abstract class SwipeBack extends ViewGroup {
         setFocusable(false);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SwipeBack, R.attr.swipeBackStyle,
-                R.style.Widget_MenuDrawer);
+                R.style.Widget_SwipeBack);
 
-        final Drawable contentBackground = a.getDrawable(R.styleable.SwipeBack_mdContentBackground);
-        final Drawable menuBackground = a.getDrawable(R.styleable.SwipeBack_mdMenuBackground);
+        final Drawable contentBackground = a.getDrawable(R.styleable.SwipeBack_sbContentBackground);
+        final Drawable swipeBackBackground = a.getDrawable(R.styleable.SwipeBack_sbSwipeBackBackground);
 
-        mMenuSize = a.getDimensionPixelSize(R.styleable.SwipeBack_mdMenuSize, dpToPx(DEFAULT_SIZE));
+        mMenuSize = a.getDimensionPixelSize(R.styleable.SwipeBack_sbSwipeBackSize, dpToPx(DEFAULT_SIZE));
 
-        mDropShadowEnabled = a.getBoolean(R.styleable.SwipeBack_mdDropShadowEnabled, true);
+        mDividerEnabled = a.getBoolean(R.styleable.SwipeBack_sbDividerEnabled, true);
 
-        mDropShadowDrawable = a.getDrawable(R.styleable.SwipeBack_mdDropShadow);
+        mDividerDrawable = a.getDrawable(R.styleable.SwipeBack_sbDivider);
 
-        if (mDropShadowDrawable == null) {
-            mDropShadowColor = a.getColor(R.styleable.SwipeBack_mdDropShadowColor, 0xFF000000);
+        if (mDividerDrawable == null) {
+            mDividerAsShadowColor = a.getColor(R.styleable.SwipeBack_sbDividerAsShadowColor, 0xFF000000);
         } else {
-            mCustomDropShadow = true;
+            mCustomDivider = true;
         }
 
-        mDropShadowSize = a.getDimensionPixelSize(R.styleable.SwipeBack_mdDropShadowSize,
+        mDividerSize = a.getDimensionPixelSize(R.styleable.SwipeBack_sbDividerSize,
                 dpToPx(DEFAULT_DROP_SHADOW_DP));
 
-        mTouchBezelSize = a.getDimensionPixelSize(R.styleable.SwipeBack_mdTouchBezelSize,
+        mTouchBezelSize = a.getDimensionPixelSize(R.styleable.SwipeBack_sbBezelSize,
                 dpToPx(DEFAULT_DRAG_BEZEL_DP));
 
 
-        mMaxAnimationDuration = a.getInt(R.styleable.SwipeBack_mdMaxAnimationDuration, DEFAULT_ANIMATION_DURATION);
+        mMaxAnimationDuration = a.getInt(R.styleable.SwipeBack_sbMaxAnimationDuration, DEFAULT_ANIMATION_DURATION);
 
 
 
-        mDrawOverlay = a.getBoolean(R.styleable.SwipeBack_mdDrawOverlay, true);
+        mDrawOverlay = a.getBoolean(R.styleable.SwipeBack_sbDrawOverlay, true);
 
-        final int position = a.getInt(R.styleable.SwipeBack_mdPosition, 0);
+        final int position = a.getInt(R.styleable.SwipeBack_sbSwipeBackPosition, 0);
         setPosition(Position.fromValue(position));
 
         a.recycle();
 
         mMenuContainer = new NoClickThroughFrameLayout(context);
         mMenuContainer.setId(R.id.md__menu);
-        mMenuContainer.setBackgroundDrawable(menuBackground);
+        mMenuContainer.setBackgroundDrawable(swipeBackBackground);
 
         mContentContainer = new NoClickThroughFrameLayout(context);
         mContentContainer.setId(R.id.md__content);
@@ -682,55 +677,55 @@ public abstract class SwipeBack extends ViewGroup {
         if (mDrawOverlay && offsetPixels != 0) {
             drawOverlay(canvas);
         }
-        if (mDropShadowEnabled && (offsetPixels != 0 || mIsStatic)) {
-            drawDropShadow(canvas);
+        if (mDividerEnabled && (offsetPixels != 0 || mIsStatic)) {
+            drawDivider(canvas);
         }
 
     }
 
     protected abstract void drawOverlay(Canvas canvas);
 
-    private void drawDropShadow(Canvas canvas) {
+    private void drawDivider(Canvas canvas) {
         // Can't pass the position to the constructor, so wait with loading the drawable until the drop shadow is
         // actually drawn.
-        if (mDropShadowDrawable == null) {
-            setDropShadowColor(mDropShadowColor);
+        if (mDividerDrawable == null) {
+            setDropShadowColor(mDividerAsShadowColor);
         }
 
         updateDropShadowRect();
-        mDropShadowDrawable.setBounds(mDropShadowRect);
-        mDropShadowDrawable.draw(canvas);
+        mDividerDrawable.setBounds(mDividerRect);
+        mDividerDrawable.draw(canvas);
     }
 
     protected void updateDropShadowRect() {
         // This updates the rect for the static and sliding drawer. The overlay drawer has its own implementation.
         switch (getPosition()) {
             case LEFT:
-                mDropShadowRect.top = 0;
-                mDropShadowRect.bottom = getHeight();
-                mDropShadowRect.right = ViewHelper.getLeft(mContentContainer);
-                mDropShadowRect.left = mDropShadowRect.right - mDropShadowSize;
+                mDividerRect.top = 0;
+                mDividerRect.bottom = getHeight();
+                mDividerRect.right = ViewHelper.getLeft(mContentContainer);
+                mDividerRect.left = mDividerRect.right - mDividerSize;
                 break;
 
             case TOP:
-                mDropShadowRect.left = 0;
-                mDropShadowRect.right = getWidth();
-                mDropShadowRect.bottom = ViewHelper.getTop(mContentContainer);
-                mDropShadowRect.top = mDropShadowRect.bottom - mDropShadowSize;
+                mDividerRect.left = 0;
+                mDividerRect.right = getWidth();
+                mDividerRect.bottom = ViewHelper.getTop(mContentContainer);
+                mDividerRect.top = mDividerRect.bottom - mDividerSize;
                 break;
 
             case RIGHT:
-                mDropShadowRect.top = 0;
-                mDropShadowRect.bottom = getHeight();
-                mDropShadowRect.left = ViewHelper.getRight(mContentContainer);
-                mDropShadowRect.right = mDropShadowRect.left + mDropShadowSize;
+                mDividerRect.top = 0;
+                mDividerRect.bottom = getHeight();
+                mDividerRect.left = ViewHelper.getRight(mContentContainer);
+                mDividerRect.right = mDividerRect.left + mDividerSize;
                 break;
 
             case BOTTOM:
-                mDropShadowRect.left = 0;
-                mDropShadowRect.right = getWidth();
-                mDropShadowRect.top = ViewHelper.getBottom(mContentContainer);
-                mDropShadowRect.bottom = mDropShadowRect.top + mDropShadowSize;
+                mDividerRect.left = 0;
+                mDividerRect.right = getWidth();
+                mDividerRect.top = ViewHelper.getBottom(mContentContainer);
+                mDividerRect.bottom = mDividerRect.top + mDividerSize;
                 break;
         }
     }
@@ -769,7 +764,7 @@ public abstract class SwipeBack extends ViewGroup {
     public void onRtlPropertiesChanged(int layoutDirection) {
         super.onRtlPropertiesChanged(layoutDirection);
 
-        if (!mCustomDropShadow) setDropShadowColor(mDropShadowColor);
+        if (!mCustomDivider) setDropShadowColor(mDividerAsShadowColor);
 
         if (getPosition() != mResolvedPosition) {
             mResolvedPosition = getPosition();
@@ -965,7 +960,7 @@ public abstract class SwipeBack extends ViewGroup {
      * @param enabled Whether the drop shadow is enabled.
      */
     public SwipeBack setDropShadowEnabled(boolean enabled) {
-        mDropShadowEnabled = enabled;
+        mDividerEnabled = enabled;
         invalidate();
 
         return this;
@@ -997,7 +992,7 @@ public abstract class SwipeBack extends ViewGroup {
         GradientDrawable.Orientation orientation = getDropShadowOrientation();
 
         final int endColor = color & 0x00FFFFFF;
-        mDropShadowDrawable = new GradientDrawable(orientation,
+        mDividerDrawable = new GradientDrawable(orientation,
                 new int[] {
                         color,
                         endColor,
@@ -1013,8 +1008,8 @@ public abstract class SwipeBack extends ViewGroup {
      * @param drawable The drawable of the drop shadow.
      */
     public SwipeBack setDropShadow(Drawable drawable) {
-        mDropShadowDrawable = drawable;
-        mCustomDropShadow = drawable != null;
+        mDividerDrawable = drawable;
+        mCustomDivider = drawable != null;
         invalidate();
         return this;
     }
@@ -1032,7 +1027,7 @@ public abstract class SwipeBack extends ViewGroup {
      * Returns the drawable of the drop shadow.
      */
     public Drawable getDropShadow() {
-        return mDropShadowDrawable;
+        return mDividerDrawable;
     }
 
     /**
@@ -1041,7 +1036,7 @@ public abstract class SwipeBack extends ViewGroup {
      * @param size The size of the drop shadow in px.
      */
     public SwipeBack setDropShadowSize(int size) {
-        mDropShadowSize = size;
+        mDividerSize = size;
         invalidate();
 
         return this;

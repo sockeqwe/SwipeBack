@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.hannesdorfmann.swipeback.Position;
 import com.hannesdorfmann.swipeback.SwipeBack;
 
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
@@ -20,15 +19,6 @@ public class SwipeBackActivity extends ActionBarActivity{
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
-        // Init the swipe back mechanism
-        SwipeBack.attach(this, Position.LEFT)
-                .setDrawOverlay(false)
-                .setDropShadowEnabled(false)
-                .peekSwipeBack(1000, 500);
-
-
-
 
     }
 

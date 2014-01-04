@@ -110,7 +110,7 @@ public abstract class SwipeBack extends ViewGroup {
     /**
      * The default drop shadow size in dp.
      */
-    private static final int DEFAULT_DROP_SHADOW_DP = 6;
+    private static final int DEFAULT_DIVIDER_SIZE_DP = 6;
 
     /**
      * Drag mode for sliding only the content view.
@@ -589,7 +589,7 @@ public abstract class SwipeBack extends ViewGroup {
         }
 
         mDividerSize = a.getDimensionPixelSize(R.styleable.SwipeBack_sbDividerSize,
-                dpToPx(DEFAULT_DROP_SHADOW_DP));
+                dpToPx(DEFAULT_DIVIDER_SIZE_DP));
 
         mTouchBezelSize = a.getDimensionPixelSize(R.styleable.SwipeBack_sbBezelSize,
                 dpToPx(DEFAULT_DRAG_BEZEL_DP));
@@ -686,18 +686,18 @@ public abstract class SwipeBack extends ViewGroup {
     protected abstract void drawOverlay(Canvas canvas);
 
     private void drawDivider(Canvas canvas) {
-        // Can't pass the position to the constructor, so wait with loading the drawable until the drop shadow is
+        // Can't pass the position to the constructor, so wait with loading the drawable until the divider is
         // actually drawn.
         if (mDividerDrawable == null) {
-            setDropShadowColor(mDividerAsShadowColor);
+            setDividerAsShadowColor(mDividerAsShadowColor);
         }
 
-        updateDropShadowRect();
+        updateDividerRect();
         mDividerDrawable.setBounds(mDividerRect);
         mDividerDrawable.draw(canvas);
     }
 
-    protected void updateDropShadowRect() {
+    protected void updateDividerRect() {
         // This updates the rect for the static and sliding drawer. The overlay drawer has its own implementation.
         switch (getPosition()) {
             case LEFT:
@@ -764,7 +764,7 @@ public abstract class SwipeBack extends ViewGroup {
     public void onRtlPropertiesChanged(int layoutDirection) {
         super.onRtlPropertiesChanged(layoutDirection);
 
-        if (!mCustomDivider) setDropShadowColor(mDividerAsShadowColor);
+        if (!mCustomDivider) setDividerAsShadowColor(mDividerAsShadowColor);
 
         if (getPosition() != mResolvedPosition) {
             mResolvedPosition = getPosition();
@@ -959,14 +959,14 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param enabled Whether the drop shadow is enabled.
      */
-    public SwipeBack setDropShadowEnabled(boolean enabled) {
+    public SwipeBack setDividerEnabled(boolean enabled) {
         mDividerEnabled = enabled;
         invalidate();
 
         return this;
     }
 
-    protected GradientDrawable.Orientation getDropShadowOrientation() {
+    protected GradientDrawable.Orientation getDividerOrientation() {
         // Gets the orientation for the static and sliding drawer. The overlay drawer provides its own implementation.
         switch (getPosition()) {
             case TOP:
@@ -984,12 +984,12 @@ public abstract class SwipeBack extends ViewGroup {
     }
 
     /**
-     * Sets the color of the drop shadow.
+     * Sets the color of the divider, if you have set the option to use a shadow gradient as divider
      *
-     * @param color The color of the drop shadow.
+     * @param color The color of the divider shadow.
      */
-    public SwipeBack setDropShadowColor(int color) {
-        GradientDrawable.Orientation orientation = getDropShadowOrientation();
+    public SwipeBack setDividerAsShadowColor(int color) {
+        GradientDrawable.Orientation orientation = getDividerOrientation();
 
         final int endColor = color & 0x00FFFFFF;
         mDividerDrawable = new GradientDrawable(orientation,
@@ -1003,11 +1003,11 @@ public abstract class SwipeBack extends ViewGroup {
     }
 
     /**
-     * Sets the drawable of the drop shadow.
+     * Sets the drawable of the divider.
      *
-     * @param drawable The drawable of the drop shadow.
+     * @param drawable The drawable of the divider.
      */
-    public SwipeBack setDropShadow(Drawable drawable) {
+    public SwipeBack setDivider(Drawable drawable) {
         mDividerDrawable = drawable;
         mCustomDivider = drawable != null;
         invalidate();
@@ -1015,27 +1015,27 @@ public abstract class SwipeBack extends ViewGroup {
     }
 
     /**
-     * Sets the drawable of the drop shadow.
+     * Sets the drawable resource id of the divider .
      *
      * @param resId The resource identifier of the the drawable.
      */
-    public SwipeBack setDropShadow(int resId) {
-        return setDropShadow(getResources().getDrawable(resId));
+    public SwipeBack setDivider(int resId) {
+        return setDivider(getResources().getDrawable(resId));
     }
 
     /**
-     * Returns the drawable of the drop shadow.
+     * Returns the drawable of the divider.
      */
-    public Drawable getDropShadow() {
+    public Drawable getDivider() {
         return mDividerDrawable;
     }
 
     /**
-     * Sets the size of the drop shadow.
+     * Sets the size (width) of the divider.
      *
-     * @param size The size of the drop shadow in px.
+     * @param size The size (width) of the divider in px.
      */
-    public SwipeBack setDropShadowSize(int size) {
+    public SwipeBack setDividerSize(int size) {
         mDividerSize = size;
         invalidate();
 

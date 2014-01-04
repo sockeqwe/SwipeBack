@@ -188,7 +188,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
     }
 
     @Override
-    protected GradientDrawable.Orientation getDropShadowOrientation() {
+    protected GradientDrawable.Orientation getDividerOrientation() {
         switch (getPosition()) {
             case TOP:
                 return GradientDrawable.Orientation.TOP_BOTTOM;
@@ -205,7 +205,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
     }
 
     @Override
-    protected void updateDropShadowRect() {
+    protected void updateDividerRect() {
         final float openRatio = Math.abs(mOffsetPixels) / mMenuSize;
         final int dropShadowSize = (int) (mDividerSize * openRatio);
 

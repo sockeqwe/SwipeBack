@@ -56,6 +56,7 @@ public class MainActivity extends ActionBarActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        initButtons();
 
         menuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -63,7 +64,7 @@ public class MainActivity extends ActionBarActivity{
 
                 switch (position){
                     case 0:
-                        startActivityAnimated(SimpleActivity.class);
+                       showSimple();
                         break;
 
                     case 1:
@@ -84,6 +85,18 @@ public class MainActivity extends ActionBarActivity{
         overridePendingTransition(R.anim.swipeback_slide_right_in, R.anim.swipeback_slide_left_out);
     }
 
+    private void initButtons(){
+        findViewById(R.id.simple).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                showSimple();
+            }
+        });
+    }
+
+
+    private void showSimple(){
+        startActivityAnimated(SimpleActivity.class);
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

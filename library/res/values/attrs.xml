@@ -15,9 +15,6 @@
         <!-- The size of the menu. -->
         <attr name="mdMenuSize" format="dimension" />
 
-        <!-- Drawable used as indicator for the active view. -->
-        <attr name="mdActiveIndicator" format="reference" />
-
         <!-- Defines whether the content will have a dropshadow onto the menu. Default is true. -->
         <attr name="mdDropShadowEnabled" format="boolean" />
 
@@ -33,8 +30,6 @@
         <!-- The touch bezel size. -->
         <attr name="mdTouchBezelSize" format="dimension" />
 
-        <!-- Whether the indicator should be animated between active views. -->
-        <attr name="mdAllowIndicatorAnimation" format="boolean" />
 
         <!-- The maximum animation duration -->
         <attr name="mdMaxAnimationDuration" format="integer" />

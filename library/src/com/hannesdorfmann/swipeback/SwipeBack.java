@@ -6,8 +6,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -216,11 +214,6 @@ public abstract class SwipeBack extends ViewGroup {
     protected int mDropShadowSize;
 
     /**
-     * Bitmap used to indicate the active view.
-     */
-    protected Bitmap mActiveIndicator;
-
-    /**
      * The currently active view.
      */
     protected View mActiveView;
@@ -231,10 +224,6 @@ public abstract class SwipeBack extends ViewGroup {
      */
     protected int mActivePosition;
 
-    /**
-     * Whether the indicator should be animated between positions.
-     */
-    private boolean mAllowIndicatorAnimation;
 
     /**
      * Used when reading the position of the active view.
@@ -318,36 +307,6 @@ public abstract class SwipeBack extends ViewGroup {
      * The Activity the drawer is attached to.
      */
     private Activity mActivity;
-
-    /**
-     * Scroller used when animating the indicator to a new position.
-     */
-    private FloatScroller mIndicatorScroller;
-
-    /**
-     * Runnable used when animating the indicator to a new position.
-     */
-    private Runnable mIndicatorRunnable = new Runnable() {
-        @Override
-        public void run() {
-            animateIndicatorInvalidate();
-        }
-    };
-
-    /**
-     * The start position of the indicator when animating it to a new position.
-     */
-    protected int mIndicatorStartPos;
-
-    /**
-     * [0..1] value indicating the current progress of the animation.
-     */
-    protected float mIndicatorOffset;
-
-    /**
-     * Whether the indicator is currently animating.
-     */
-    protected boolean mIndicatorAnimating;
 
     /**
      * Bundle used to hold the drawers state.
@@ -626,11 +585,6 @@ public abstract class SwipeBack extends ViewGroup {
 
         mMenuSize = a.getDimensionPixelSize(R.styleable.SwipeBack_mdMenuSize, dpToPx(120));
 
-        final int indicatorResId = a.getResourceId(R.styleable.SwipeBack_mdActiveIndicator, 0);
-        if (indicatorResId != 0) {
-            mActiveIndicator = BitmapFactory.decodeResource(getResources(), indicatorResId);
-        }
-
         mDropShadowEnabled = a.getBoolean(R.styleable.SwipeBack_mdDropShadowEnabled, true);
 
         mDropShadowDrawable = a.getDrawable(R.styleable.SwipeBack_mdDropShadow);
@@ -647,7 +601,6 @@ public abstract class SwipeBack extends ViewGroup {
         mTouchBezelSize = a.getDimensionPixelSize(R.styleable.SwipeBack_mdTouchBezelSize,
                 dpToPx(DEFAULT_DRAG_BEZEL_DP));
 
-        mAllowIndicatorAnimation = a.getBoolean(R.styleable.SwipeBack_mdAllowIndicatorAnimation, false);
 
         mMaxAnimationDuration = a.getInt(R.styleable.SwipeBack_mdMaxAnimationDuration, DEFAULT_ANIMATION_DURATION);
 
@@ -670,7 +623,6 @@ public abstract class SwipeBack extends ViewGroup {
 
         mMenuOverlay = new ColorDrawable(0xFF000000);
 
-        mIndicatorScroller = new FloatScroller(SMOOTH_INTERPOLATOR);
     }
 
     @Override
@@ -723,9 +675,6 @@ public abstract class SwipeBack extends ViewGroup {
         super.onDetachedFromWindow();
     }
 
-    private boolean shouldDrawIndicator() {
-        return mActiveView != null && mActiveIndicator != null && isViewDescendant(mActiveView);
-    }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
@@ -738,9 +687,7 @@ public abstract class SwipeBack extends ViewGroup {
         if (mDropShadowEnabled && (offsetPixels != 0 || mIsStatic)) {
             drawDropShadow(canvas);
         }
-        if (shouldDrawIndicator() && (offsetPixels != 0 || mIsStatic)) {
-            drawIndicator(canvas);
-        }
+
     }
 
     protected abstract void drawOverlay(Canvas canvas);
@@ -790,117 +737,7 @@ public abstract class SwipeBack extends ViewGroup {
         }
     }
 
-    private void drawIndicator(Canvas canvas) {
-        Integer position = (Integer) mActiveView.getTag(R.id.mdActiveViewPosition);
-        final int pos = position == null ? 0 : position;
-        if (pos == mActivePosition) {
-            updateIndicatorClipRect();
-            canvas.save();
-            canvas.clipRect(mIndicatorClipRect);
 
-            int drawLeft = 0;
-            int drawTop = 0;
-            switch (getPosition()) {
-                case LEFT:
-                case TOP:
-                    drawLeft = mIndicatorClipRect.left;
-                    drawTop = mIndicatorClipRect.top;
-                    break;
-
-                case RIGHT:
-                    drawLeft = mIndicatorClipRect.right - mActiveIndicator.getWidth();
-                    drawTop = mIndicatorClipRect.top;
-                    break;
-
-                case BOTTOM:
-                    drawLeft = mIndicatorClipRect.left;
-                    drawTop = mIndicatorClipRect.bottom - mActiveIndicator.getHeight();
-            }
-
-            canvas.drawBitmap(mActiveIndicator, drawLeft, drawTop, null);
-            canvas.restore();
-        }
-    }
-
-    /**
-     * Update the {@link android.graphics.Rect} where the indicator is drawn.
-     */
-    protected void updateIndicatorClipRect() {
-        mActiveView.getDrawingRect(mActiveRect);
-        offsetDescendantRectToMyCoords(mActiveView, mActiveRect);
-
-        final float openRatio = mIsStatic ? 1.0f : Math.abs(mOffsetPixels) / mMenuSize;
-
-        final float interpolatedRatio = 1.f - INDICATOR_INTERPOLATOR.getInterpolation((1.f - openRatio));
-
-        final int indicatorWidth = mActiveIndicator.getWidth();
-        final int indicatorHeight = mActiveIndicator.getHeight();
-
-        final int interpolatedWidth = (int) (indicatorWidth * interpolatedRatio);
-        final int interpolatedHeight = (int) (indicatorHeight * interpolatedRatio);
-
-        final int startPos = mIndicatorStartPos;
-
-        int left = 0;
-        int top = 0;
-        int right = 0;
-        int bottom = 0;
-
-        switch (getPosition()) {
-            case LEFT:
-            case RIGHT:
-                final int finalTop = mActiveRect.top + ((mActiveRect.height() - indicatorHeight) / 2);
-                if (mIndicatorAnimating) {
-                    top = (int) (startPos + ((finalTop - startPos) * mIndicatorOffset));
-                } else {
-                    top = finalTop;
-                }
-                bottom = top + indicatorHeight;
-                break;
-
-            case TOP:
-            case BOTTOM:
-                final int finalLeft = mActiveRect.left + ((mActiveRect.width() - indicatorWidth) / 2);
-                if (mIndicatorAnimating) {
-                    left = (int) (startPos + ((finalLeft - startPos) * mIndicatorOffset));
-                } else {
-                    left = finalLeft;
-                }
-                right = left + indicatorWidth;
-                break;
-        }
-
-        switch (getPosition()) {
-            case LEFT: {
-                right = ViewHelper.getLeft(mContentContainer);
-                left = right - interpolatedWidth;
-                break;
-            }
-
-            case TOP: {
-                bottom = ViewHelper.getTop(mContentContainer);
-                top = bottom - interpolatedHeight;
-                break;
-            }
-
-            case RIGHT: {
-                left = ViewHelper.getRight(mContentContainer);
-                right = left + interpolatedWidth;
-                break;
-            }
-
-            case BOTTOM: {
-                top = ViewHelper.getBottom(mContentContainer);
-                bottom = top + interpolatedHeight;
-                break;
-            }
-        }
-
-        mIndicatorClipRect.left = left;
-        mIndicatorClipRect.top = top;
-        mIndicatorClipRect.right = right;
-        mIndicatorClipRect.bottom = bottom;
-    }
 
     private void setPosition(Position position) {
         mPosition = position;
@@ -1040,56 +877,6 @@ public abstract class SwipeBack extends ViewGroup {
         return mMenuSize;
     }
 
-    /**
-     * Set the active view.
-     * If the mdActiveIndicator attribute is set, this View will have the indicator drawn next to it.
-     *
-     * @param v The active view.
-     */
-    protected void setActiveView(View v) {
-        setActiveView(v, 0);
-    }
-
-    /**
-     * Set the active view.
-     * If the mdActiveIndicator attribute is set, this View will have the indicator drawn next to it.
-     *
-     * @param v        The active view.
-     * @param position Optional position, usually used with ListView. v.setTag(R.id.mdActiveViewPosition, position)
-     *                 must be called first.
-     */
-    protected void setActiveView(View v, int position) {
-        final View oldView = mActiveView;
-        mActiveView = v;
-        mActivePosition = position;
-
-        if (mAllowIndicatorAnimation && oldView != null) {
-            startAnimatingIndicator();
-        }
-
-        invalidate();
-    }
-
-    /**
-     * Sets whether the indicator should be animated between active views.
-     *
-     * @param animate Whether the indicator should be animated between active views.
-     */
-    public void setAllowIndicatorAnimation(boolean animate) {
-        if (animate != mAllowIndicatorAnimation) {
-            mAllowIndicatorAnimation = animate;
-            completeAnimatingIndicator();
-        }
-    }
-
-    /**
-     * Indicates whether the indicator should be animated between active views.
-     *
-     * @return Whether the indicator should be animated between active views.
-     */
-    public boolean getAllowIndicatorAnimation() {
-        return mAllowIndicatorAnimation;
-    }
 
     /**
      * Scroll listener that checks whether the active view has moved before the drawer is invalidated.
@@ -1108,16 +895,7 @@ public abstract class SwipeBack extends ViewGroup {
         }
     };
 
-    /**
-     * Starts animating the indicator to a new position.
-     */
-    private void startAnimatingIndicator() {
-        mIndicatorStartPos = getIndicatorStartPos();
-        mIndicatorAnimating = true;
-        mIndicatorScroller.startScroll(0.0f, 1.0f, INDICATOR_ANIM_DURATION);
 
-        animateIndicatorInvalidate();
-    }
 
     /**
      * Returns the start position of the indicator.
@@ -1150,31 +928,6 @@ public abstract class SwipeBack extends ViewGroup {
         }
     }
 
-    /**
-     * Callback when each frame in the indicator animation should be drawn.
-     */
-    private void animateIndicatorInvalidate() {
-        if (mIndicatorScroller.computeScrollOffset()) {
-            mIndicatorOffset = mIndicatorScroller.getCurr();
-            invalidate();
-
-            if (!mIndicatorScroller.isFinished()) {
-                postOnAnimation(mIndicatorRunnable);
-                return;
-            }
-        }
-
-        completeAnimatingIndicator();
-    }
-
-    /**
-     * Called when the indicator animation has completed.
-     */
-    private void completeAnimatingIndicator() {
-        mIndicatorOffset = 1.0f;
-        mIndicatorAnimating = false;
-        invalidate();
-    }
 
     /**
      * Enables or disables offsetting the menu when dragging the drawer.

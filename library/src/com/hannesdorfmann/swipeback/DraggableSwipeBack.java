@@ -184,25 +184,27 @@ public abstract class DraggableSwipeBack extends SwipeBack {
         mCloseEnough = dpToPx(DraggableSwipeBack.CLOSE_ENOUGH);
     }
 
-    public void toggleMenu(boolean animate) {
+    public SwipeBack toggle(boolean animate) {
         if (mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING) {
             close(animate);
         } else if (mDrawerState == STATE_CLOSED || mDrawerState == STATE_CLOSING) {
             open(animate);
         }
+        return this;
     }
 
     public boolean isVisible() {
         return mMenuVisible;
     }
 
-    public void setSize(final int size) {
+    public SwipeBack setSize(final int size) {
         mMenuSize = size;
         if (mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING) {
             setOffsetPixels(mMenuSize);
         }
         requestLayout();
         invalidate();
+        return this;
     }
 
     public void setOffsetMenuEnabled(boolean offsetMenu) {

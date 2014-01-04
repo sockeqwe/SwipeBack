@@ -29,7 +29,7 @@ public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
 
 
 
-    public void onSwiping(SwipeBack swipeBack, float openRatio, int pixelOffset, int state){
+    public void onSwiping(SwipeBack swipeBack, float openRatio, int pixelOffset){
 
     }
 }

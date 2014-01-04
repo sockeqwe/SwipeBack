@@ -14,17 +14,6 @@ import android.view.View;
 public interface SwipeBackTransformer {
 
     /**
-     * The swipe back view is opening (not fully opened yet, but opening)
-     */
-    public static final int STATE_OPENING = 0;
-
-
-    /**
-     * The swipe back view is closing (not fully closed yet, but closing)
-     */
-    public  static final int STATE_CLOSING = 1;
-
-    /**
      * This is called if the swipe back view has been created. As parameter you get the concrete
      * view and you can setup your internal things like getting references to the child view by using {@link android.view.View#findViewById(int)} etc.
      * @param swipeBack The reference to the SwipeBack object
@@ -60,9 +49,8 @@ public interface SwipeBackTransformer {
      * @param swipeBack The reference to the SwipeBack object
      * @param openRatio a value between 0 and 1 that indicates how much open (visible) the swiping view is
      * @param pixelOffset The number of pixels visible of the swipe back view
-     * @param state The state that indicates if it's {@link #STATE_OPENING} or {@link #STATE_CLOSING}
      */
-    public void onSwiping(SwipeBack swipeBack, float openRatio, int pixelOffset, int state);
+    public void onSwiping(SwipeBack swipeBack, float openRatio, int pixelOffset);
 
 
 

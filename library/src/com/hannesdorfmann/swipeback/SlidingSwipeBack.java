@@ -1,8 +1,10 @@
 package com.hannesdorfmann.swipeback;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -35,7 +37,7 @@ public class SlidingSwipeBack extends DraggableSwipeBack {
     }
 
     @Override
-    public void open(boolean animate) {
+    public SwipeBack open(boolean animate) {
         int animateTo = 0;
         switch (getPosition()) {
             case LEFT:
@@ -50,13 +52,16 @@ public class SlidingSwipeBack extends DraggableSwipeBack {
         }
 
         animateOffsetTo(animateTo, 0, animate);
+        return this;
     }
 
     @Override
-    public void close(boolean animate) {
+    public SwipeBack close(boolean animate) {
         animateOffsetTo(0, 0, animate);
+        return this;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onOffsetPixelsChanged(int offsetPixels) {
         if (USE_TRANSLATIONS) {
@@ -180,6 +185,7 @@ public class SlidingSwipeBack extends DraggableSwipeBack {
      *
      * @param offsetPixels The number of pixels the content if offset.
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void offsetMenu(int offsetPixels) {
         if (!mOffsetMenu || mMenuSize == 0) {
             return;
@@ -407,7 +413,7 @@ public class SlidingSwipeBack extends DraggableSwipeBack {
 
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible && x > offsetPixels) {
-                    closeMenu();
+                    close();
                 }
                 break;
             }
@@ -421,7 +427,7 @@ public class SlidingSwipeBack extends DraggableSwipeBack {
 
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible && y > offsetPixels) {
-                    closeMenu();
+                    close();
                 }
                 break;
             }
@@ -437,7 +443,7 @@ public class SlidingSwipeBack extends DraggableSwipeBack {
 
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible && x < width + offsetPixels) {
-                    closeMenu();
+                    close();
                 }
                 break;
             }
@@ -451,7 +457,7 @@ public class SlidingSwipeBack extends DraggableSwipeBack {
 
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible && y < getHeight() + offsetPixels) {
-                    closeMenu();
+                    close();
                 }
                 break;
             }
@@ -483,7 +489,7 @@ public class SlidingSwipeBack extends DraggableSwipeBack {
             if (Math.abs(mOffsetPixels) > mMenuSize / 2) {
                 open();
             } else {
-                closeMenu();
+                close();
             }
 
             return false;

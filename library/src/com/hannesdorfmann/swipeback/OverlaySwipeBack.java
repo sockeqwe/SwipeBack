@@ -95,7 +95,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
     }
 
     @Override
-    public void open(boolean animate) {
+    public SwipeBack open(boolean animate) {
         int animateTo = 0;
         switch (getPosition()) {
             case LEFT:
@@ -110,11 +110,13 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
         }
 
         animateOffsetTo(animateTo, 0, animate);
+        return this;
     }
 
     @Override
-    public void close(boolean animate) {
+    public SwipeBack close(boolean animate) {
         animateOffsetTo(0, 0, animate);
+        return this;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -460,7 +462,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
 
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible) {
-                    closeMenu();
+                    close();
                 }
                 break;
             }
@@ -474,7 +476,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
 
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible) {
-                    closeMenu();
+                    close();
                 }
                 break;
             }
@@ -490,7 +492,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
 
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible) {
-                    closeMenu();
+                    close();
                 }
                 break;
             }
@@ -504,7 +506,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
 
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible) {
-                    closeMenu();
+                    close();
                 }
                 break;
             }
@@ -543,7 +545,7 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
             if (Math.abs(mOffsetPixels) > mMenuSize / 2) {
                 open();
             } else {
-                closeMenu();
+                close();
             }
 
             return false;

@@ -307,7 +307,7 @@ public abstract class SwipeBack extends ViewGroup {
      * Possible values are {@link #TOUCH_MODE_NONE}, {@link #TOUCH_MODE_BEZEL} or {@link #TOUCH_MODE_FULLSCREEN}
      * Default: {@link #TOUCH_MODE_BEZEL}
      */
-    protected int mTouchMode = TOUCH_MODE_BEZEL;
+    protected int mTouchMode = TOUCH_MODE_FULLSCREEN;
 
     /**
      * Indicates whether to use {@link android.view.View#LAYER_TYPE_HARDWARE} when animating the drawer.
@@ -560,17 +560,7 @@ public abstract class SwipeBack extends ViewGroup {
 
             @Override
             public void onDrawerSlide(float openRatio, int offsetPixels) {
-               int internalState = drawer.getState();
-
-                Log.d(TAG, "internal state "+internalState);
-
-               int state = SwipeBackTransformer.STATE_OPENING;
-
-               if (internalState == STATE_CLOSING)
-                   state = SwipeBackTransformer.STATE_CLOSING;
-
-
-               drawer.mSwipeBackTransformer.onSwiping(drawer, openRatio, offsetPixels, state);
+               drawer.mSwipeBackTransformer.onSwiping(drawer, openRatio, offsetPixels);
             }
         };
 
@@ -988,8 +978,8 @@ public abstract class SwipeBack extends ViewGroup {
     /**
      * Toggles the menu open and close with animation.
      */
-    public void toggleMenu() {
-        toggleMenu(true);
+    public SwipeBack toggle() {
+        return toggle(true);
     }
 
     /**
@@ -997,13 +987,13 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param animate Whether open/close should be animated.
      */
-    public abstract void toggleMenu(boolean animate);
+    public abstract SwipeBack toggle(boolean animate);
 
     /**
      * Animates the menu open.
      */
-    public void open() {
-        open(true);
+    public SwipeBack open() {
+        return open(true);
     }
 
     /**
@@ -1011,13 +1001,13 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param animate Whether open/close should be animated.
      */
-    public abstract void open(boolean animate);
+    public abstract SwipeBack open(boolean animate);
 
     /**
      * Animates the menu closed.
      */
-    public void closeMenu() {
-        close(true);
+    public SwipeBack close() {
+        return close(true);
     }
 
     /**
@@ -1025,7 +1015,7 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param animate Whether open/close should be animated.
      */
-    public abstract void close(boolean animate);
+    public abstract SwipeBack close(boolean animate);
 
     /**
      * Indicates whether the swipe back is currently visible.
@@ -1039,7 +1029,7 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param size The size of the menu.
      */
-    public abstract void setSize(int size);
+    public abstract SwipeBack setSize(int size);
 
     /**
      * Returns the size of the menu.
@@ -1056,7 +1046,7 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param v The active view.
      */
-    public void setActiveView(View v) {
+    protected void setActiveView(View v) {
         setActiveView(v, 0);
     }
 
@@ -1068,7 +1058,7 @@ public abstract class SwipeBack extends ViewGroup {
      * @param position Optional position, usually used with ListView. v.setTag(R.id.mdActiveViewPosition, position)
      *                 must be called first.
      */
-    public void setActiveView(View v, int position) {
+    protected void setActiveView(View v, int position) {
         final View oldView = mActiveView;
         mActiveView = v;
         mActivePosition = position;
@@ -1223,9 +1213,11 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param enabled Whether the drop shadow is enabled.
      */
-    public void setDropShadowEnabled(boolean enabled) {
+    public SwipeBack setDropShadowEnabled(boolean enabled) {
         mDropShadowEnabled = enabled;
         invalidate();
+
+        return this;
     }
 
     protected GradientDrawable.Orientation getDropShadowOrientation() {
@@ -1458,8 +1450,9 @@ public abstract class SwipeBack extends ViewGroup {
      *
      * @param view The desired content to display.
      */
-    public void setContentView(View view) {
+    public SwipeBack setContentView(View view) {
         setContentView(view, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        return this;
     }
 
     /**

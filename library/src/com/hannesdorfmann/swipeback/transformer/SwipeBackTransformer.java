@@ -1,10 +1,12 @@
-package com.hannesdorfmann.swipeback;
+package com.hannesdorfmann.swipeback.transformer;
 
 import android.app.Activity;
 import android.view.View;
 
+import com.hannesdorfmann.swipeback.SwipeBack;
+
 /**
- * A {@link com.hannesdorfmann.swipeback.SwipeBackTransformer} is responsible to manipulate the
+ * A {@link SwipeBackTransformer} is responsible to manipulate the
  * swipe back view according to its current state (opening or closing)
  * {@link #onSwiping(com.hannesdorfmann.swipeback.SwipeBack, float, int, int)} with some nice animations.
  * Also {@link #onSwipeBackCompleted(com.hannesdorfmann.swipeback.SwipeBack, android.app.Activity)} will be called

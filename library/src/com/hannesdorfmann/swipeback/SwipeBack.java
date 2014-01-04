@@ -21,10 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import com.hannesdorfmann.swipeback.transformer.DefaultSwipeBackTransformer;
+import com.hannesdorfmann.swipeback.transformer.SwipeBackTransformer;
 
 public abstract class SwipeBack extends ViewGroup {
 
@@ -166,10 +166,6 @@ public abstract class SwipeBack extends ViewGroup {
      */
     static final boolean USE_TRANSLATIONS = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 
-    /**
-     * Time to animate the indicator to the new active view.
-     */
-    static final int INDICATOR_ANIM_DURATION = 800;
 
     /**
      * The maximum animation duration.
@@ -181,10 +177,11 @@ public abstract class SwipeBack extends ViewGroup {
      */
     protected static final Interpolator SMOOTH_INTERPOLATOR = new SmoothInterpolator();
 
+
     /**
-     * Interpolator used for stretching/retracting the active indicator.
+     * The default size of the swipe back view
      */
-    protected static final Interpolator INDICATOR_INTERPOLATOR = new AccelerateInterpolator();
+    private static final int DEFAULT_SIZE = 60;
 
     /**
      * Drawable used as menu overlay.
@@ -583,7 +580,7 @@ public abstract class SwipeBack extends ViewGroup {
         final Drawable contentBackground = a.getDrawable(R.styleable.SwipeBack_mdContentBackground);
         final Drawable menuBackground = a.getDrawable(R.styleable.SwipeBack_mdMenuBackground);
 
-        mMenuSize = a.getDimensionPixelSize(R.styleable.SwipeBack_mdMenuSize, dpToPx(120));
+        mMenuSize = a.getDimensionPixelSize(R.styleable.SwipeBack_mdMenuSize, dpToPx(DEFAULT_SIZE));
 
         mDropShadowEnabled = a.getBoolean(R.styleable.SwipeBack_mdDropShadowEnabled, true);
 

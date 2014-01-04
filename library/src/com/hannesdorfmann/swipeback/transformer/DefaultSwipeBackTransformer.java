@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.hannesdorfmann.swipeback.R;
 import com.hannesdorfmann.swipeback.SwipeBack;
-import com.hannesdorfmann.swipeback.SwipeBackTransformer;
 
 /**
  * The default SwipeBackTransformator

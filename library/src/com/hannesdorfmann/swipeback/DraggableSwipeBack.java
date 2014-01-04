@@ -15,6 +15,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 
+import com.hannesdorfmann.swipeback.interpolator.PeekInterpolator;
+
 public abstract class DraggableSwipeBack extends SwipeBack {
 
     /**

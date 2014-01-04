@@ -1,4 +1,4 @@
-package com.hannesdorfmann.swipeback;
+package com.hannesdorfmann.swipeback.interpolator;
 
 import android.view.animation.Interpolator;
 
@@ -6,7 +6,7 @@ import android.view.animation.Interpolator;
  * Interpolator which, when drawn from 0 to 1, looks like half a sine-wave. Used for smoother opening/closing when
  * peeking at the drawer.
  */
-class SinusoidalInterpolator implements Interpolator {
+public class SinusoidalInterpolator implements Interpolator {
 
     @Override
     public float getInterpolation(float input) {

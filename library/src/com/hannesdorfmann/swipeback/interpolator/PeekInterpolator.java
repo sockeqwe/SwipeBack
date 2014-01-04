@@ -1,8 +1,8 @@
-package com.hannesdorfmann.swipeback;
+package com.hannesdorfmann.swipeback.interpolator;
 
 import android.view.animation.Interpolator;
 
-class PeekInterpolator implements Interpolator {
+public class PeekInterpolator implements Interpolator {
 
     private static final String TAG = "PeekInterpolator";
 

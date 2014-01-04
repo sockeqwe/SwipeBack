@@ -1,8 +1,8 @@
-package com.hannesdorfmann.swipeback;
+package com.hannesdorfmann.swipeback.interpolator;
 
 import android.view.animation.Interpolator;
 
-class SmoothInterpolator implements Interpolator {
+public class SmoothInterpolator implements Interpolator {
 
     @Override
     public float getInterpolation(float t) {

@@ -23,6 +23,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
 
+import com.hannesdorfmann.swipeback.interpolator.SmoothInterpolator;
 import com.hannesdorfmann.swipeback.transformer.DefaultSwipeBackTransformer;
 import com.hannesdorfmann.swipeback.transformer.SwipeBackTransformer;
 
@@ -179,7 +180,7 @@ public abstract class SwipeBack extends ViewGroup {
 
 
     /**
-     * The default size of the swipe back view
+     * The default size of the swipe back view in dp
      */
     private static final int DEFAULT_SIZE = 60;
 

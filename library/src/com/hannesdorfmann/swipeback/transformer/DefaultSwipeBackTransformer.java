@@ -1,10 +1,17 @@
 package com.hannesdorfmann.swipeback.transformer;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewTreeObserver.OnPreDrawListener;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hannesdorfmann.swipeback.R;
 import com.hannesdorfmann.swipeback.SwipeBack;
+import com.hannesdorfmann.swipeback.util.MathUtils;
 
 /**
  * The default SwipeBackTransformator
@@ -12,23 +19,129 @@ import com.hannesdorfmann.swipeback.SwipeBack;
  */
 public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
 
-    public void onSwipeBackViewCreated(SwipeBack swipeBack, Activity activity, View swipeBackView){
+	protected ImageView arrowTop;
+	protected ImageView arrowBottom;
+	protected TextView textView;
 
-    }
+	protected int arrowInitialWidth;
+	protected int swipeBackViewWidth;
 
-    public void onSwipeBackCompleted(SwipeBack swipeBack, Activity activity){
-        activity.onBackPressed();
-        activity.overridePendingTransition(R.anim.swipeback_slide_left_in, R.anim.swipeback_slide_right_out);
-    }
+	@SuppressLint("NewApi")
+	@Override
+	public void onSwipeBackViewCreated(SwipeBack swipeBack, Activity activity,
+			final View swipeBackView) {
+
+		arrowTop = (ImageView) swipeBackView.findViewById(R.id.arrowTop);
+		arrowBottom = (ImageView) swipeBackView.findViewById(R.id.arrowBottom);
+		textView = (TextView) swipeBackView.findViewById(R.id.text);
+
+		// Setup initial alpha value
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			textView.setAlpha(0);
+		} else {
+			// Pre Honeycomb
+		}
+
+		// Retrieve the width of the swipeBack view, after
+		// everything is layouted
+		swipeBackView.getViewTreeObserver().addOnPreDrawListener(
+				new OnPreDrawListener() {
+
+					@Override
+					public boolean onPreDraw() {
+
+						swipeBackView.getViewTreeObserver()
+						.removeOnPreDrawListener(this);
+
+						swipeBackViewWidth = swipeBackView.getWidth();
+						return true;
+					}
+				});
+
+		// Retrieve the width of the arrow after everything is layouted
+		// We asume the both arrows have the same size
+		arrowTop.getViewTreeObserver().addOnPreDrawListener(
+				new OnPreDrawListener() {
+
+					@Override
+					public boolean onPreDraw() {
+
+						arrowTop.getViewTreeObserver().removeOnPreDrawListener(
+								this);
+
+						arrowInitialWidth = arrowTop.getWidth();
+
+						return true;
+					}
+				});
 
 
-    public void onSwipeBackReseted(SwipeBack swipeBack, Activity activity){
 
-    }
+	}
+
+	@Override
+	public void onSwipeBackCompleted(SwipeBack swipeBack, Activity activity){
+		activity.onBackPressed();
+		activity.overridePendingTransition(R.anim.swipeback_slide_left_in, R.anim.swipeback_slide_right_out);
+	}
+
+
+	@SuppressLint("NewApi")
+	@Override
+	public void onSwipeBackReseted(SwipeBack swipeBack, Activity activity){
+
+		// Reset the values to the initial state
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			textView.setAlpha(0);
+		} else {
+			// Pre Honeycomb
+		}
+	}
 
 
 
-    public void onSwiping(SwipeBack swipeBack, float openRatio, int pixelOffset){
+	@SuppressLint("NewApi")
+	@Override
+	public void onSwiping(SwipeBack swipeBack, float openRatio, int pixelOffset){
 
-    }
+		// Do step by step animations
+		float startAlphaAt = 0.5f;
+		float startArrowAt = 0.4f;
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			// Android 3 and above
+
+			// Animate the textview
+			textView.setAlpha(MathUtils.mapPoint(openRatio, startAlphaAt, 1f,
+					0f, 1f));
+
+			int arrowEndWidth = swipeBackViewWidth - swipeBack.dpToPx(4);
+
+			// Animate Arrows
+			if (openRatio >= startArrowAt) {
+
+				int width = MathUtils.mapPoint(openRatio, 0f, 1f,
+						arrowInitialWidth, arrowEndWidth);
+
+				LayoutParams topParmas = arrowTop.getLayoutParams();
+				topParmas.width = width;
+				arrowTop.setLayoutParams(topParmas);
+
+				LayoutParams bottomParams = arrowBottom.getLayoutParams();
+				bottomParams.width = width;
+				arrowBottom.setLayoutParams(bottomParams);
+
+			}
+
+		} else {
+			// Pre Honeycomb (Android 2.x)
+
+			// No good idea how to animate without nineold androids ( I will not
+			// bring dependencies to nineold android into the library)
+		}
+
+	}
+
+
+
 }

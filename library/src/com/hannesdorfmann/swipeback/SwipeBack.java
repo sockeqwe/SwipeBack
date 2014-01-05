@@ -629,42 +629,7 @@ public abstract class SwipeBack extends ViewGroup {
 		final int position = a.getInt(R.styleable.SwipeBack_sbSwipeBackPosition, 0);
 		setPosition(Position.fromValue(position));
 
-		String transformerClassName = a
-				.getString(R.styleable.SwipeBack_sbTransformer);
 
-
-		if (transformerClassName != null) {
-			try {
-				mSwipeBackTransformer = (SwipeBackTransformer) Class.forName(
-						transformerClassName).newInstance();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-				throw new RuntimeException(
-						"Could not instantiate an object of "
-								+ transformerClassName
-								+ ". An empty constructor is needed. If your "
-								+ SwipeBackTransformer.class.getSimpleName()
-								+ " implementation can not provide an empty constructor, than use the programaticall way to instead of xml");
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-				throw new RuntimeException(
-						"Could not instantiate an object of "
-								+ transformerClassName
-								+ ". An empty constructor is needed. If your "
-								+ SwipeBackTransformer.class.getSimpleName()
-								+ " implementation can not provide an empty constructor, than use the programaticall way to instead of xml");
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				throw new RuntimeException(
-						"Could not instantiate an object of "
-								+ transformerClassName
-								+ ". An empty constructor is needed. If your "
-								+ SwipeBackTransformer.class.getSimpleName()
-								+ " implementation can not provide an empty constructor, than use the programaticall way to instead of xml");
-			}
-		} else {
-			mSwipeBackTransformer = new DefaultSwipeBackTransformer();
-		}
 
 		a.recycle();
 
@@ -703,7 +668,7 @@ public abstract class SwipeBack extends ViewGroup {
 		}
 	}
 
-	protected int dpToPx(int dp) {
+	public int dpToPx(int dp) {
 		return (int) (getResources().getDisplayMetrics().density * dp + 0.5f);
 	}
 
@@ -1251,7 +1216,7 @@ public abstract class SwipeBack extends ViewGroup {
 	 *
 	 * @return The menu view.
 	 */
-	public View getMenuView() {
+	public View getSwipeBackView() {
 		return mMenuView;
 	}
 

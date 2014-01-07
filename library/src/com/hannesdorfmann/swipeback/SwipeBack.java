@@ -1017,24 +1017,28 @@ public abstract class SwipeBack extends ViewGroup {
 		GradientDrawable.Orientation orientation = getDividerOrientation();
 
 		final int endColor = color & 0x00FFFFFF;
-		mDividerDrawable = new GradientDrawable(orientation,
+		GradientDrawable gradient = new GradientDrawable(orientation,
 				new int[] {
 				color,
 				endColor,
 		});
-		invalidate();
+
+		setDivider(gradient);
 
 		return this;
 	}
 
 	/**
-	 * Sets the drawable of the divider.
-	 *
-	 * @param drawable The drawable of the divider.
+	 * Sets the drawable of the divider and automatically enables it by calling
+	 * internally {@link #setDividerEnabled(boolean)}
+	 * 
+	 * @param drawable
+	 *            The drawable of the divider.
 	 */
 	public SwipeBack setDivider(Drawable drawable) {
 		mDividerDrawable = drawable;
 		mCustomDivider = drawable != null;
+		setDividerEnabled(drawable != null);
 		invalidate();
 		return this;
 	}
@@ -1056,14 +1060,46 @@ public abstract class SwipeBack extends ViewGroup {
 	}
 
 	/**
-	 * Sets the size (width) of the divider.
-	 *
-	 * @param size The size (width) of the divider in px.
+	 * Sets the size (width) of the divider. The value is a dp value
+	 * 
+	 * @param size
+	 *            The size (width) of the divider in dp (device independent
+	 *            pixel = dp = dip).
+	 * @see #setDividerSizeInPixel(int)
 	 */
-	public SwipeBack setDividerSize(int size) {
-		mDividerSize = size;
+	public SwipeBack setDividerSize(int dp) {
+		mDividerSize = dpToPx(dp);
 		invalidate();
 
+		return this;
+	}
+
+	/**
+	 * Sets the size (width) of the divider. The value is in pixel.
+	 * 
+	 * @param pixel
+	 *            The size (widht) of the divider in pixels
+	 * @return
+	 * @see #setDividerSize(int)
+	 */
+	public SwipeBack setDividerSizeInPixel(int pixel) {
+		mDividerSize = pixel;
+		invalidate();
+		return this;
+	}
+
+	/**
+	 * Draw the divider as solid color (using {@link ColorDrawable}) and
+	 * automatically enables it by calling internally
+	 * {@link #setDividerEnabled(boolean)}
+	 * 
+	 * @param color
+	 * @return
+	 */
+	public SwipeBack setDividerAsSolidColor(int color) {
+
+		setDivider(new ColorDrawable(color));
+		setDividerEnabled(true);
 		return this;
 	}
 

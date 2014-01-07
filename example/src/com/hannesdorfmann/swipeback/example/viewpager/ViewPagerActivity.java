@@ -1,5 +1,6 @@
 package com.hannesdorfmann.swipeback.example.viewpager;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
@@ -23,13 +24,15 @@ public class ViewPagerActivity extends SwipeBackActivity {
 		SwipeBack.attach(this, Position.LEFT)
 		.setContentView(R.layout.activity_view_pager)
 		.setSwipeBackView(R.layout.swipeback_default)
+		.setDividerAsSolidColor(Color.WHITE)
+		.setDividerSize(2)
 		.setOnInterceptMoveEventListener(
 				new OnInterceptMoveEventListener() {
 					@Override
 					public boolean isViewDraggable(View v, int dx,
 							int x, int y) {
 						if (v == mViewPager) {
-									return !(mPagerPosition == 0 && mPagerOffsetPixels == 0)
+							return !(mPagerPosition == 0 && mPagerOffsetPixels == 0)
 									|| dx < 0;
 						}
 

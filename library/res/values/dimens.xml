@@ -4,5 +4,7 @@
     <dimen name="arrow_height">27dp</dimen>
     
     <dimen name="arrow_to_text_space">32dp</dimen>
+    
+    
 
 </resources>

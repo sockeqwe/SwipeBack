@@ -1337,6 +1337,25 @@ public abstract class SwipeBack extends ViewGroup {
 	 */
 	public abstract int getTouchBezelSize();
 
+	/**
+	 * Set the {@link SwipeBackTransformer}
+	 * 
+	 * @param transformer
+	 */
+	public SwipeBack setSwipeBackTransformer(SwipeBackTransformer transformer) {
+		mSwipeBackTransformer = transformer;
+		return this;
+	}
+
+	/**
+	 * Get the {@link SwipeBackTransformer}
+	 * 
+	 * @return
+	 */
+	public SwipeBackTransformer getSwipeBackTransformer() {
+		return mSwipeBackTransformer;
+	}
+
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	public void postOnAnimation(Runnable action) {

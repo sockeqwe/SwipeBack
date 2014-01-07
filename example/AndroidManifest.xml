@@ -24,6 +24,9 @@
 
         <activity android:name="com.hannesdorfmann.swipeback.example.simple.SimpleActivity"
                   android:label="@string/simple_activity" />
+        
+        <activity android:name="com.hannesdorfmann.swipeback.example.stack.StackActivity" 
+            android:label="@string/stack_activity"/>
     </application>
 
 </manifest>

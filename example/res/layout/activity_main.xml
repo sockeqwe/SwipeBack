@@ -41,6 +41,14 @@
                 android:id="@+id/viewPager"
                 android:layout_gravity="center"
                 />
+            
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Overlay"
+                android:id="@+id/overlay"
+                android:layout_gravity="center"
+                />
         </LinearLayout>
     </ScrollView>
 

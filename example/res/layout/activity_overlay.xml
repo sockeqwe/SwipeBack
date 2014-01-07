@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="This is a simple activity. Do a swipe to the right anywhere on the sceen to return to the main activity"
+        android:text="This is a samle of a Swipe Back width overlay. Do a swipe to the right anywhere on the sceen to return to the main activity"
         android:id="@+id/textView"
         android:layout_gravity="center"
         android:gravity="center"

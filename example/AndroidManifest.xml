@@ -28,12 +28,11 @@
             android:label="@string/slide_activity" />
         <activity
             android:name="com.hannesdorfmann.swipeback.example.viewpager.ViewPagerActivity"
-            android:label="@string/title_activity_view_pager"
-            android:parentActivityName="com.hannesdorfmann.swipeback.example.SwipeBackActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.hannesdorfmann.swipeback.example.SwipeBackActivity" />
-        </activity>
+            android:label="@string/viewpager_activity" />
+        
+        <activity android:name="com.hannesdorfmann.swipeback.example.overlay.OverlayActivity"
+            android:label="@string/overlay_activity"
+            />
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.hannesdorfmann.swipeback.example.overlay.OverlayActivity;
 import com.hannesdorfmann.swipeback.example.simple.SimpleActivity;
 import com.hannesdorfmann.swipeback.example.slide.SlideActivity;
 import com.hannesdorfmann.swipeback.example.viewpager.ViewPagerActivity;
@@ -29,7 +30,8 @@ public class MainActivity extends ActionBarActivity{
 
 		String [] menuItems = {
 				"Simple","SlideAnimated",
-				"ViewPager"
+				"ViewPager",
+				"Overlay"
 		};
 
 
@@ -78,6 +80,10 @@ public class MainActivity extends ActionBarActivity{
 				case 2:
 					showViewPager();
 					break;
+
+						case 3:
+							showOverlay();
+							break;
 				}
 
 			}
@@ -129,8 +135,19 @@ public class MainActivity extends ActionBarActivity{
 					}
 				});
 
+		findViewById(R.id.overlay).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						showOverlay();
+					}
+				});
+
 	}
 
+	private void showOverlay() {
+		startActivityAnimated(OverlayActivity.class);
+	}
 
 	private void showSimple(){
 		startActivityAnimated(SimpleActivity.class);

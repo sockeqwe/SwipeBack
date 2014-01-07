@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
 
 
-    <ImageView
+    <View
         android:id="@+id/arrowTop"
         android:layout_width="@dimen/arrow_width"
         android:layout_height="@dimen/arrow_height"
-        android:src="@drawable/swipeback_arrow_left"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_above="@+id/text"
-        android:layout_marginBottom="40dp"
+        android:background="@drawable/swipeback_arrow_left"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginBottom="@dimen/space_arrow_top_to_text"
         />
 
 
@@ -27,19 +25,19 @@
         android:gravity="bottom|right"
 
         style="@style/swipeBackText"
-        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/text_up"
         android:text="@string/swipeback_back"
         />
 
 
-    <ImageView
+    <View
         android:id="@+id/arrowBottom"
         android:layout_width="@dimen/arrow_width"
         android:layout_height="@dimen/arrow_height"
-        android:src="@drawable/swipeback_arrow_left"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/text"
-        android:layout_marginTop="40dp"
+        android:background="@drawable/swipeback_arrow_left"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginTop="@dimen/space_arrow_bottom_to_text"
         />
 
-</RelativeLayout>
+</FrameLayout>

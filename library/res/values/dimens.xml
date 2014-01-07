@@ -2,4 +2,9 @@
 <resources>
     <dimen name="arrow_width">36dp</dimen>
     <dimen name="arrow_height">27dp</dimen>
+    
+    <dimen name="text_up">50dp</dimen>
+    <dimen name="space_arrow_top_to_text">120dp</dimen>
+    <dimen name="space_arrow_bottom_to_text">20dp</dimen>
+
 </resources>

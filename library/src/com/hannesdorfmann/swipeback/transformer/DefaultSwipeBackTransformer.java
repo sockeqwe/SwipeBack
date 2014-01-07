@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hannesdorfmann.swipeback.R;
@@ -17,16 +16,16 @@ import com.hannesdorfmann.swipeback.util.MathUtils;
  */
 public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
 
-	protected ImageView arrowTop;
-	protected ImageView arrowBottom;
+	protected View arrowTop;
+	protected View arrowBottom;
 	protected TextView textView;
 
 	@Override
 	public void onSwipeBackViewCreated(SwipeBack swipeBack, Activity activity,
 			final View swipeBackView) {
 
-		arrowTop = (ImageView) swipeBackView.findViewById(R.id.arrowTop);
-		arrowBottom = (ImageView) swipeBackView.findViewById(R.id.arrowBottom);
+		arrowTop = swipeBackView.findViewById(R.id.arrowTop);
+		arrowBottom = swipeBackView.findViewById(R.id.arrowBottom);
 		textView = (TextView) swipeBackView.findViewById(R.id.text);
 
 		onSwipeBackReseted(swipeBack, activity);

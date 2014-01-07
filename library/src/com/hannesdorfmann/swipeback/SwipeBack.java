@@ -222,6 +222,11 @@ public abstract class SwipeBack extends ViewGroup {
 	 */
 	protected int mActivePosition;
 
+	/**
+	 * Used to indicate if the view is in destroying / process, so any swipe
+	 * event should not be delivered to the {@link SwipeBackTransformer}
+	 */
+	protected boolean mDestroying = false;
 
 	/**
 	 * Used when reading the position of the active view.
@@ -509,20 +514,23 @@ public abstract class SwipeBack extends ViewGroup {
 			@Override
 			public void onDrawerStateChange(int oldState, int newState) {
 
-				if (mSwipeBackTransformer != null) {
+				if (!mDestroying) {
 
-					if (STATE_OPEN == newState){
-						mSwipeBackTransformer.onSwipeBackCompleted(
-								SwipeBack.this, mActivity);
-					} else if (STATE_CLOSED == newState){
-						mSwipeBackTransformer.onSwipeBackReseted(
-								SwipeBack.this, mActivity);
+					if (mSwipeBackTransformer != null) {
+
+						if (STATE_OPEN == newState){
+							mSwipeBackTransformer.onSwipeBackCompleted(
+									SwipeBack.this, mActivity);
+						} else if (STATE_CLOSED == newState){
+							mSwipeBackTransformer.onSwipeBackReseted(
+									SwipeBack.this, mActivity);
+						}
+
+					} else {
+						Log.w(TAG, "Internal state changed, but no "
+								+ SwipeBackTransformer.class.getSimpleName()
+								+ " is registered");
 					}
-
-				} else {
-					Log.w(TAG, "Internal state changed, but no "
-							+ SwipeBackTransformer.class.getSimpleName()
-							+ " is registered");
 				}
 
 			}
@@ -530,14 +538,16 @@ public abstract class SwipeBack extends ViewGroup {
 			@Override
 			public void onDrawerSlide(float openRatio, int offsetPixels) {
 
-				if (mSwipeBackTransformer != null) {
-					mSwipeBackTransformer.onSwiping(SwipeBack.this,
-							openRatio, offsetPixels);
-				} else {
-					Log.w(TAG,
-							"Swiping, but no "
-									+ SwipeBackTransformer.class.getSimpleName()
-									+ " is registered");
+				if (!mDestroying) {
+					if (mSwipeBackTransformer != null) {
+						mSwipeBackTransformer.onSwiping(SwipeBack.this,
+								openRatio, offsetPixels);
+					} else {
+						Log.w(TAG,
+								"Swiping, but no "
+										+ SwipeBackTransformer.class.getSimpleName()
+										+ " is registered");
+					}
 				}
 			}
 		};
@@ -693,6 +703,7 @@ public abstract class SwipeBack extends ViewGroup {
 
 	@Override
 	protected void onDetachedFromWindow() {
+		Log.d(TAG, "detach from window");
 		getViewTreeObserver().removeOnScrollChangedListener(mScrollListener);
 		super.onDetachedFromWindow();
 	}
@@ -1336,6 +1347,8 @@ public abstract class SwipeBack extends ViewGroup {
 		}
 	}
 
+
+
 	@Override
 	protected boolean fitSystemWindows(Rect insets) {
 		if (mDragMode == MENU_DRAG_WINDOW && mPosition != Position.BOTTOM) {
@@ -1378,16 +1391,23 @@ public abstract class SwipeBack extends ViewGroup {
 
 	@Override
 	protected Parcelable onSaveInstanceState() {
-		Parcelable superState = super.onSaveInstanceState();
-		SavedState state = new SavedState(superState);
 
-		if (mState == null) {
-			mState = new Bundle();
-		}
-		saveState(mState);
+		Log.d(TAG, "Save instance state");
 
-		state.mState = mState;
-		return state;
+		mDestroying = true;
+
+		return super.onSaveInstanceState();
+
+		// Parcelable superState = super.onSaveInstanceState();
+		// SavedState state = new SavedState(superState);
+		//
+		// if (mState == null) {
+		// mState = new Bundle();
+		// }
+		// saveState(mState);
+		//
+		// state.mState = mState;
+		// return state;
 	}
 
 	@Override

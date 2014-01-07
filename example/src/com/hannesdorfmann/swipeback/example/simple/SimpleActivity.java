@@ -20,7 +20,7 @@ public class SimpleActivity  extends SwipeBackActivity {
 		SwipeBack.attach(this, Position.LEFT).setDrawOverlay(false)
 		.setDividerEnabled(false)
 		.setContentView(R.layout.activity_simple)
-		.setSwipeBackView(R.layout.swipeback_default);
+				.setSwipeBackView(R.layout.swipeback_default);
 
 	}
 }

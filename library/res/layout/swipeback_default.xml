@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
 
+	<FrameLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1"
+	    android:layout_marginBottom="@dimen/arrow_to_text_space" >
+	    
+	    <View
+	        android:id="@+id/arrowTop"
+	        android:layout_width="@dimen/arrow_width"
+	        android:layout_height="@dimen/arrow_height"
+	        android:background="@drawable/swipeback_arrow_left"
+	        android:layout_gravity="bottom|right"
+	        />
 
-    <View
-        android:id="@+id/arrowTop"
-        android:layout_width="@dimen/arrow_width"
-        android:layout_height="@dimen/arrow_height"
-        android:background="@drawable/swipeback_arrow_left"
-        android:layout_gravity="center_vertical|right"
-        android:layout_marginBottom="@dimen/space_arrow_top_to_text"
-        />
-
+    </FrameLayout>
 
 
     <com.hannesdorfmann.swipeback.view.VerticalTextView
@@ -26,18 +31,24 @@
 
         style="@style/swipeBackText"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/text_up"
         android:text="@string/swipeback_back"
         />
 
 
-    <View
-        android:id="@+id/arrowBottom"
-        android:layout_width="@dimen/arrow_width"
-        android:layout_height="@dimen/arrow_height"
-        android:background="@drawable/swipeback_arrow_left"
-        android:layout_gravity="center_vertical|right"
-        android:layout_marginTop="@dimen/space_arrow_bottom_to_text"
-        />
+    <FrameLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="3"
+	    android:layout_marginTop="@dimen/arrow_to_text_space" >
+	    
+	    <View
+	        android:id="@+id/arrowBottom"
+	        android:layout_width="@dimen/arrow_width"
+	        android:layout_height="@dimen/arrow_height"
+	        android:background="@drawable/swipeback_arrow_left"
+	        android:layout_gravity="top|right"
+	        />
+	    
+	    </FrameLayout>
 
-</FrameLayout>
+</LinearLayout>

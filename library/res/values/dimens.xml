@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="arrow_width">36dp</dimen>
+    <dimen name="arrow_width">34dp</dimen>
     <dimen name="arrow_height">27dp</dimen>
     
-    <dimen name="text_up">50dp</dimen>
-    <dimen name="space_arrow_top_to_text">120dp</dimen>
-    <dimen name="space_arrow_bottom_to_text">20dp</dimen>
+    <dimen name="arrow_to_text_space">32dp</dimen>
 
 </resources>

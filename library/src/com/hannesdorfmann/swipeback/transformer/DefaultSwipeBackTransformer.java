@@ -10,11 +10,7 @@ import com.hannesdorfmann.swipeback.R;
 import com.hannesdorfmann.swipeback.SwipeBack;
 import com.hannesdorfmann.swipeback.util.MathUtils;
 
-/**
- * The default SwipeBackTransformator
- * Created by Hannes Dorfmann on 03.01.14.
- */
-public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
+public class DefaultSwipeBackTransformer implements SwipeBackTransformer {
 
 	protected View arrowTop;
 	protected View arrowBottom;
@@ -33,15 +29,15 @@ public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
 	}
 
 	@Override
-	public void onSwipeBackCompleted(SwipeBack swipeBack, Activity activity){
+	public void onSwipeBackCompleted(SwipeBack swipeBack, Activity activity) {
 		activity.onBackPressed();
-		activity.overridePendingTransition(R.anim.swipeback_slide_left_in, R.anim.swipeback_slide_right_out);
+		activity.overridePendingTransition(R.anim.swipeback_stack_to_front,
+				R.anim.swipeback_stack_right_out);
 	}
-
 
 	@SuppressLint("NewApi")
 	@Override
-	public void onSwipeBackReseted(SwipeBack swipeBack, Activity activity){
+	public void onSwipeBackReseted(SwipeBack swipeBack, Activity activity) {
 
 		// Reset the values to the initial state
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -51,11 +47,9 @@ public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
 		}
 	}
 
-
-
 	@SuppressLint("NewApi")
 	@Override
-	public void onSwiping(SwipeBack swipeBack, float openRatio, int pixelOffset){
+	public void onSwiping(SwipeBack swipeBack, float openRatio, int pixelOffset) {
 
 		// Do step by step animations
 		float startAlphaAt = 0.5f;
@@ -75,7 +69,5 @@ public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
 		}
 
 	}
-
-
 
 }

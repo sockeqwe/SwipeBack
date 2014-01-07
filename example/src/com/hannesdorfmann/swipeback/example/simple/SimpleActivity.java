@@ -17,10 +17,9 @@ public class SimpleActivity  extends SwipeBackActivity {
 		super.onCreate(saved);
 
 		// Init the swipe back mechanism
-		SwipeBack.attach(this, Position.LEFT).setDrawOverlay(false)
-		.setDividerEnabled(false)
+		SwipeBack.attach(this, Position.LEFT)
 		.setContentView(R.layout.activity_simple)
-				.setSwipeBackView(R.layout.swipeback_default);
+		.setSwipeBackView(R.layout.swipeback_default);
 
 	}
 }

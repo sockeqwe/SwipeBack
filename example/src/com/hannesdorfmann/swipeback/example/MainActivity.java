@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.hannesdorfmann.swipeback.example.simple.SimpleActivity;
-import com.hannesdorfmann.swipeback.example.stack.StackActivity;
+import com.hannesdorfmann.swipeback.example.slide.SlideActivity;
 
 public class MainActivity extends ActionBarActivity{
 
@@ -27,8 +27,7 @@ public class MainActivity extends ActionBarActivity{
 		setContentView(R.layout.activity_main);
 
 		String [] menuItems = {
-				"Simple",
-				"StackAnimated",
+				"Simple","SlideAnimated",
 				"ViewPager"
 		};
 
@@ -72,7 +71,7 @@ public class MainActivity extends ActionBarActivity{
 					break;
 
 				case 1:
-					showStackAnimated();
+					showSlideAnimated();
 					break;
 
 				case 2:
@@ -84,11 +83,11 @@ public class MainActivity extends ActionBarActivity{
 		});
 	}
 
-	private void showStackAnimated() {
-		Intent i = new Intent(this, StackActivity.class);
+	private void showSlideAnimated() {
+		Intent i = new Intent(this, SlideActivity.class);
 		startActivity(i);
-		overridePendingTransition(R.anim.swipeback_stack_right_in,
-				R.anim.swipeback_stack_to_back);
+		overridePendingTransition(R.anim.swipeback_slide_right_in,
+				R.anim.swipeback_slide_left_out);
 	}
 
 
@@ -97,7 +96,9 @@ public class MainActivity extends ActionBarActivity{
 		Intent i = new Intent(this, clazz);
 		startActivity(i);
 
-		overridePendingTransition(R.anim.swipeback_slide_right_in, R.anim.swipeback_slide_left_out);
+		overridePendingTransition(R.anim.swipeback_stack_right_in,
+				R.anim.swipeback_stack_to_back);
+
 	}
 
 	private void initButtons(){
@@ -111,7 +112,7 @@ public class MainActivity extends ActionBarActivity{
 		findViewById(R.id.stack).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showStackAnimated();
+				showSlideAnimated();
 			}
 		});
 	}

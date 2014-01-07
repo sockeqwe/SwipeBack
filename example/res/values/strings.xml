@@ -7,7 +7,7 @@
 
 
     <string name="simple_activity">Simple Activity</string>
-    <string name="stack_activity">Stack Animated</string>
+    <string name="slide_activity">Slide Animated</string>
    	<string name="viewpager_activity">View Pager</string>
 
 

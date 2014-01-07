@@ -613,7 +613,8 @@ public abstract class SwipeBack extends ViewGroup {
 
 		mMenuSize = a.getDimensionPixelSize(R.styleable.SwipeBack_sbSwipeBackSize, dpToPx(DEFAULT_SIZE));
 
-		mDividerEnabled = a.getBoolean(R.styleable.SwipeBack_sbDividerEnabled, true);
+		mDividerEnabled = a.getBoolean(R.styleable.SwipeBack_sbDividerEnabled,
+				false);
 
 		mDividerDrawable = a.getDrawable(R.styleable.SwipeBack_sbDivider);
 
@@ -634,7 +635,7 @@ public abstract class SwipeBack extends ViewGroup {
 
 
 
-		mDrawOverlay = a.getBoolean(R.styleable.SwipeBack_sbDrawOverlay, true);
+		mDrawOverlay = a.getBoolean(R.styleable.SwipeBack_sbDrawOverlay, false);
 
 		final int position = a.getInt(R.styleable.SwipeBack_sbSwipeBackPosition, 0);
 		setPosition(Position.fromValue(position));

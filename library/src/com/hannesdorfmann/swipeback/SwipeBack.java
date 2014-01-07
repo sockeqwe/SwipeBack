@@ -653,7 +653,7 @@ public abstract class SwipeBack extends ViewGroup {
 		View menu = findViewById(R.id.mdMenu);
 		if (menu != null) {
 			removeView(menu);
-			setMenuView(menu);
+			setSwipeBackView(menu);
 		}
 
 		View content = findViewById(R.id.mdContent);
@@ -922,24 +922,6 @@ public abstract class SwipeBack extends ViewGroup {
 
 
 	/**
-	 * Returns the start position of the indicator.
-	 *
-	 * @return The start position of the indicator.
-	 */
-	private int getIndicatorStartPos() {
-		switch (getPosition()) {
-		case TOP:
-			return mIndicatorClipRect.left;
-		case RIGHT:
-			return mIndicatorClipRect.top;
-		case BOTTOM:
-			return mIndicatorClipRect.left;
-		default:
-			return mIndicatorClipRect.top;
-		}
-	}
-
-	/**
 	 * Compute the touch area based on the touch mode.
 	 */
 	protected void updateTouchAreaSize() {
@@ -1158,11 +1140,12 @@ public abstract class SwipeBack extends ViewGroup {
 	}
 
 	/**
-	 * Set the menu view from a layout resource.
-	 *
-	 * @param layoutResId Resource ID to be inflated.
+	 * Set the swipe back view from a layout resource.
+	 * 
+	 * @param layoutResId
+	 *            Resource ID to be inflated.
 	 */
-	public SwipeBack setMenuView(int layoutResId) {
+	public SwipeBack setSwipeBackView(int layoutResId) {
 		mMenuContainer.removeAllViews();
 		mMenuView = LayoutInflater.from(getContext()).inflate(layoutResId, mMenuContainer, false);
 		mMenuContainer.addView(mMenuView);
@@ -1173,22 +1156,25 @@ public abstract class SwipeBack extends ViewGroup {
 	}
 
 	/**
-	 * Set the menu view to an explicit view.
-	 *
-	 * @param view The menu view.
+	 * Set the swipe back view to an explicit view.
+	 * 
+	 * @param view
+	 *            The swipe back view.
 	 */
-	public SwipeBack setMenuView(View view) {
-		setMenuView(view, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+	public SwipeBack setSwipeBackView(View view) {
+		setSwipeBackView(view, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		return this;
 	}
 
 	/**
-	 * Set the menu view to an explicit view.
-	 *
-	 * @param view   The menu view.
-	 * @param params Layout parameters for the view.
+	 * Set the swipe back view to an explicit view.
+	 * 
+	 * @param view
+	 *            The swipe back view.
+	 * @param params
+	 *            Layout parameters for the view.
 	 */
-	public SwipeBack setMenuView(View view, LayoutParams params) {
+	public SwipeBack setSwipeBackView(View view, LayoutParams params) {
 		mMenuView = view;
 		mMenuContainer.removeAllViews();
 		mMenuContainer.addView(view, params);

@@ -12,14 +12,15 @@ import com.hannesdorfmann.swipeback.example.SwipeBackActivity;
  */
 public class SimpleActivity  extends SwipeBackActivity {
 
-    public void onCreate(Bundle saved){
-        super.onCreate(saved);
+	@Override
+	public void onCreate(Bundle saved){
+		super.onCreate(saved);
 
-        // Init the swipe back mechanism
-        SwipeBack.attach(this, Position.LEFT)
-                .setDrawOverlay(false)
-                .setDividerEnabled(false)
-                .setContentView(R.layout.activity_simple)
-                .setMenuView(R.layout.swipeback_default);
-    }
+		// Init the swipe back mechanism
+		SwipeBack.attach(this, Position.LEFT).setDrawOverlay(false)
+		.setDividerEnabled(false)
+		.setContentView(R.layout.activity_simple)
+		.setSwipeBackView(R.layout.swipeback_default);
+
+	}
 }

@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,10 +21,6 @@ public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
 	protected ImageView arrowBottom;
 	protected TextView textView;
 
-	protected int arrowInitialWidth;
-	protected int swipeBackViewWidth;
-
-	@SuppressLint("NewApi")
 	@Override
 	public void onSwipeBackViewCreated(SwipeBack swipeBack, Activity activity,
 			final View swipeBackView) {
@@ -35,47 +29,7 @@ public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
 		arrowBottom = (ImageView) swipeBackView.findViewById(R.id.arrowBottom);
 		textView = (TextView) swipeBackView.findViewById(R.id.text);
 
-		// Setup initial alpha value
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			textView.setAlpha(0);
-		} else {
-			// Pre Honeycomb
-		}
-
-		// Retrieve the width of the swipeBack view, after
-		// everything is layouted
-		swipeBackView.getViewTreeObserver().addOnPreDrawListener(
-				new OnPreDrawListener() {
-
-					@Override
-					public boolean onPreDraw() {
-
-						swipeBackView.getViewTreeObserver()
-						.removeOnPreDrawListener(this);
-
-						swipeBackViewWidth = swipeBackView.getWidth();
-						return true;
-					}
-				});
-
-		// Retrieve the width of the arrow after everything is layouted
-		// We asume the both arrows have the same size
-		arrowTop.getViewTreeObserver().addOnPreDrawListener(
-				new OnPreDrawListener() {
-
-					@Override
-					public boolean onPreDraw() {
-
-						arrowTop.getViewTreeObserver().removeOnPreDrawListener(
-								this);
-
-						arrowInitialWidth = arrowTop.getWidth();
-
-						return true;
-					}
-				});
-
-
+		onSwipeBackReseted(swipeBack, activity);
 
 	}
 
@@ -106,7 +60,6 @@ public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
 
 		// Do step by step animations
 		float startAlphaAt = 0.5f;
-		float startArrowAt = 0.4f;
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			// Android 3 and above
@@ -114,24 +67,6 @@ public class DefaultSwipeBackTransformer implements SwipeBackTransformer{
 			// Animate the textview
 			textView.setAlpha(MathUtils.mapPoint(openRatio, startAlphaAt, 1f,
 					0f, 1f));
-
-			int arrowEndWidth = swipeBackViewWidth - swipeBack.dpToPx(4);
-
-			// Animate Arrows
-			if (openRatio >= startArrowAt) {
-
-				int width = MathUtils.mapPoint(openRatio, 0f, 1f,
-						arrowInitialWidth, arrowEndWidth);
-
-				LayoutParams topParmas = arrowTop.getLayoutParams();
-				topParmas.width = width;
-				arrowTop.setLayoutParams(topParmas);
-
-				LayoutParams bottomParams = arrowBottom.getLayoutParams();
-				bottomParams.width = width;
-				arrowBottom.setLayoutParams(bottomParams);
-
-			}
 
 		} else {
 			// Pre Honeycomb (Android 2.x)

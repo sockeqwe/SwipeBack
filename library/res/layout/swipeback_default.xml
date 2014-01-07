@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/arrowTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/arrow_width"
+        android:layout_height="@dimen/arrow_height"
         android:src="@drawable/swipeback_arrow_left"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -34,8 +34,8 @@
 
     <ImageView
         android:id="@+id/arrowBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/arrow_width"
+        android:layout_height="@dimen/arrow_height"
         android:src="@drawable/swipeback_arrow_left"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/text"

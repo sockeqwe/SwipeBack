@@ -16,10 +16,18 @@ public class SlideActivity extends SwipeBackActivity {
 
 		// Init the swipe back mechanism
 		SwipeBack.attach(this, Position.LEFT).setDrawOverlay(true)
-				.setDividerEnabled(true)
+		.setDividerEnabled(true)
 		.setSwipeBackTransformer(new SlideSwipeBackTransformer())
 		.setContentView(R.layout.activity_simple)
 		.setSwipeBackView(R.layout.swipeback_default);
+
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		overridePendingTransition(R.anim.swipeback_slide_left_in,
+				R.anim.swipeback_slide_right_out);
 
 	}
 

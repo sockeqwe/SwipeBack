@@ -2,16 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hannesdorfmann.swipeback.example" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19" />
-    
-    
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
-        
-        >
+        android:theme="@style/AppTheme" >
         <activity
             android:name="com.hannesdorfmann.swipeback.example.MainActivity"
             android:label="@string/app_name" >
@@ -21,12 +20,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.hannesdorfmann.swipeback.example.simple.SimpleActivity"
-                  android:label="@string/simple_activity" />
-        
-        <activity android:name="com.hannesdorfmann.swipeback.example.slide.SlideActivity" 
-            android:label="@string/slide_activity"/>
+        <activity
+            android:name="com.hannesdorfmann.swipeback.example.simple.SimpleActivity"
+            android:label="@string/simple_activity" />
+        <activity
+            android:name="com.hannesdorfmann.swipeback.example.slide.SlideActivity"
+            android:label="@string/slide_activity" />
+        <activity
+            android:name="com.hannesdorfmann.swipeback.example.viewpager.ViewPagerActivity"
+            android:label="@string/title_activity_view_pager"
+            android:parentActivityName="com.hannesdorfmann.swipeback.example.SwipeBackActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.hannesdorfmann.swipeback.example.SwipeBackActivity" />
+        </activity>
     </application>
 
 </manifest>

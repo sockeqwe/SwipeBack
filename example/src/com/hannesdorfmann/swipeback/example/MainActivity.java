@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.hannesdorfmann.swipeback.example.simple.SimpleActivity;
 import com.hannesdorfmann.swipeback.example.slide.SlideActivity;
+import com.hannesdorfmann.swipeback.example.viewpager.ViewPagerActivity;
 
 public class MainActivity extends ActionBarActivity{
 
@@ -75,7 +76,7 @@ public class MainActivity extends ActionBarActivity{
 					break;
 
 				case 2:
-					// TODO implement
+					showViewPager();
 					break;
 				}
 
@@ -88,6 +89,10 @@ public class MainActivity extends ActionBarActivity{
 		startActivity(i);
 		overridePendingTransition(R.anim.swipeback_slide_right_in,
 				R.anim.swipeback_slide_left_out);
+	}
+
+	private void showViewPager() {
+		startActivityAnimated(ViewPagerActivity.class);
 	}
 
 
@@ -115,6 +120,15 @@ public class MainActivity extends ActionBarActivity{
 				showSlideAnimated();
 			}
 		});
+
+		findViewById(R.id.viewPager).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						showViewPager();
+					}
+				});
+
 	}
 
 

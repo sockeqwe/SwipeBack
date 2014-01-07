@@ -4,11 +4,11 @@
     <string name="app_name">Swipe Back</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-
     <string name="simple_activity">Simple Activity</string>
     <string name="slide_activity">Slide Animated</string>
-   	<string name="viewpager_activity">View Pager</string>
-
+    <string name="viewpager_activity">View Pager</string>
+    <string name="title_activity_view_pager">ViewPagerActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

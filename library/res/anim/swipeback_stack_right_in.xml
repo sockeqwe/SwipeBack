@@ -3,6 +3,6 @@
     
      <translate android:fromXDelta="100%"
                android:toXDelta="0%"
-               android:duration="@android:integer/config_mediumAnimTime" />
+               android:duration="@integer/stack_duration" />
      
 </set>

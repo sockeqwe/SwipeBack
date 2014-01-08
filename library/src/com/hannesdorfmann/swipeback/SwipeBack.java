@@ -49,9 +49,9 @@ public abstract class SwipeBack extends ViewGroup {
 		 * Called when the swipe back slides.
 		 * 
 		 * @param openRatio
-		 *            Ratio for how open the menu is.
+		 *            Ratio for how open the swipe back view is.
 		 * @param offsetPixels
-		 *            Current offset of the menu in pixels.
+		 *            Current offset of the swipe back view in pixels.
 		 */
 		void onSlide(float openRatio, int offsetPixels);
 	}
@@ -190,9 +190,9 @@ public abstract class SwipeBack extends ViewGroup {
 	private static final int DEFAULT_SIZE = 50;
 
 	/**
-	 * Drawable used as menu overlay.
+	 * Drawable used as swipe back view overlay.
 	 */
-	protected Drawable mMenuOverlay;
+	protected Drawable mSwipeBackOverlay;
 
 	/**
 	 * Defines if the divider is enabled (will be drawn)
@@ -249,7 +249,7 @@ public abstract class SwipeBack extends ViewGroup {
 	private View mSwipeBackView;
 
 	/**
-	 * The parent of the menu view.
+	 * The parent of the swipe back view.
 	 */
 	protected BuildLayerFrameLayout mSwipeBackContainer;
 
@@ -259,12 +259,13 @@ public abstract class SwipeBack extends ViewGroup {
 	protected BuildLayerFrameLayout mContentContainer;
 
 	/**
-	 * The size of the menu (width or height depending on the gravity).
+	 * The size of the swipe back view (width or height depending on the
+	 * gravity).
 	 */
 	protected int mSwipeBackViewSize;
 
 	/**
-	 * Indicates whether the menu is currently visible.
+	 * Indicates whether the swipe back view is currently visible.
 	 */
 	protected boolean mSwipeBackViewVisible;
 
@@ -388,9 +389,11 @@ public abstract class SwipeBack extends ViewGroup {
 
 	/**
 	 * Attaches the SwipeBack to the Activity.
-	 *
-	 * @param activity The activity the menu drawer will be attached to.
-	 * @param type     The {@link SwipeBack.Type} of the drawer.
+	 * 
+	 * @param activity
+	 *            The activity the Swipe Back will be attached to.
+	 * @param type
+	 *            The {@link SwipeBack.Type} of the drawer.
 	 * @return The created SwipeBack instance.
 	 */
 	public static SwipeBack attach(Activity activity, Type type) {
@@ -399,9 +402,11 @@ public abstract class SwipeBack extends ViewGroup {
 
 	/**
 	 * Attaches the SwipeBack to the Activity.
-	 *
-	 * @param activity The activity the menu drawer will be attached to.
-	 * @param type     The {@link SwipeBack.Type} of the drawer.
+	 * 
+	 * @param activity
+	 *            The activity the swipe back will be attached to.
+	 * @param type
+	 *            The {@link SwipeBack.Type} of the drawer.
 	 * @return The created SwipeBack instance.
 	 */
 	public static SwipeBack attach(Activity activity, Type type, SwipeBackTransformer transformer) {
@@ -411,9 +416,11 @@ public abstract class SwipeBack extends ViewGroup {
 
 	/**
 	 * Attaches the SwipeBack to the Activity.
-	 *
-	 * @param activity The activity the menu drawer will be attached to.
-	 * @param position Where to position the menu.
+	 * 
+	 * @param activity
+	 *            The activity the swipe back will be attached to.
+	 * @param position
+	 *            Where to position the swipe back.
 	 * @return The created SwipeBack instance.
 	 */
 	public static SwipeBack attach(Activity activity, Position position, SwipeBackTransformer transformer) {
@@ -423,9 +430,11 @@ public abstract class SwipeBack extends ViewGroup {
 
 	/**
 	 * Attaches the SwipeBack to the Activity.
-	 *
-	 * @param activity The activity the menu drawer will be attached to.
-	 * @param position Where to position the menu.
+	 * 
+	 * @param activity
+	 *            The activity the swipe back will be attached to.
+	 * @param position
+	 *            Where to position the swipe back.
 	 * @return The created SwipeBack instance.
 	 */
 	public static SwipeBack attach(Activity activity, Position position) {
@@ -436,10 +445,13 @@ public abstract class SwipeBack extends ViewGroup {
 
 	/**
 	 * Attaches the SwipeBack to the Activity.
-	 *
-	 * @param activity The activity the menu drawer will be attached to.
-	 * @param type     The {@link SwipeBack.Type} of the drawer.
-	 * @param position Where to position the menu.
+	 * 
+	 * @param activity
+	 *            The activity the swipe back will be attached to.
+	 * @param type
+	 *            The {@link SwipeBack.Type} of the drawer.
+	 * @param position
+	 *            Where to position the swipe back.
 	 * @param transformer
 	 * @return The created SwipeBack instance.
 	 */
@@ -481,35 +493,40 @@ public abstract class SwipeBack extends ViewGroup {
 
 	/**
 	 * Attaches the SwipeBack to the Activity.
-	 *
-	 * @param activity The activity the menu drawer will be attached to.
-	 * @param type     The {@link SwipeBack.Type} of the drawer.
-	 * @param position Where to position the menu.
-	 * @param dragMode The drag mode of the drawer. Can be either {@link SwipeBack#DRAG_CONTENT}
-	 *                 or {@link SwipeBack#DRAG_WINDOW}.
+	 * 
+	 * @param activity
+	 *            The activity the swipe back will be attached to.
+	 * @param type
+	 *            The {@link SwipeBack.Type} of the drawer.
+	 * @param position
+	 *            Where to position the swipe back.
+	 * @param dragMode
+	 *            The drag mode of the drawer. Can be either
+	 *            {@link SwipeBack#DRAG_CONTENT} or
+	 *            {@link SwipeBack#DRAG_WINDOW}.
 	 * @return The created SwipeBack instance.
 	 */
 	public static SwipeBack attach(Activity activity, Type type, Position position, int dragMode, SwipeBackTransformer transformer) {
 
-		SwipeBack menuDrawer = createSwipeBack(activity, dragMode, position, type, transformer);
-		menuDrawer.setId(R.id.md__drawer);
+		SwipeBack swipeBack = createSwipeBack(activity, dragMode, position, type, transformer);
+		swipeBack.setId(R.id.md__drawer);
 
 
 		switch (dragMode) {
 		case SwipeBack.DRAG_CONTENT:
-			attachToContent(activity, menuDrawer);
+			attachToContent(activity, swipeBack);
 			break;
 
 		case SwipeBack.DRAG_WINDOW:
-			attachToDecor(activity, menuDrawer);
+			attachToDecor(activity, swipeBack);
 			break;
 
 		default:
-			throw new RuntimeException("Unknown menu mode: " + dragMode);
+			throw new RuntimeException("Unknown drag mode: " + dragMode);
 		}
 
 
-		return menuDrawer;
+		return swipeBack;
 	}
 
 	/**
@@ -598,9 +615,9 @@ public abstract class SwipeBack extends ViewGroup {
 	}
 
 	/**
-	 * Attaches the menu drawer to the content view.
+	 * Attaches the swipe back to the content view.
 	 */
-	private static void attachToContent(Activity activity, SwipeBack menuDrawer) {
+	private static void attachToContent(Activity activity, SwipeBack swipeBack) {
 		/**
 		 * Do not call mActivity#setContentView.
 		 * E.g. if using with a ListActivity, Activity#setContentView is overridden and dispatched to
@@ -609,20 +626,20 @@ public abstract class SwipeBack extends ViewGroup {
 		ViewGroup content = (ViewGroup) activity
 				.findViewById(android.R.id.content);
 		content.removeAllViews();
-		content.addView(menuDrawer, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		content.addView(swipeBack, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	}
 
 	/**
-	 * Attaches the menu drawer to the window.
+	 * Attaches the swipe back drawer to the window.
 	 */
-	private static void attachToDecor(Activity activity, SwipeBack menuDrawer) {
+	private static void attachToDecor(Activity activity, SwipeBack swipeBack) {
 		ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
 		ViewGroup decorChild = (ViewGroup) decorView.getChildAt(0);
 
 		decorView.removeAllViews();
-		decorView.addView(menuDrawer, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		decorView.addView(swipeBack, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
-		menuDrawer.mContentContainer.addView(decorChild, decorChild.getLayoutParams());
+		swipeBack.mContentContainer.addView(decorChild, decorChild.getLayoutParams());
 	}
 
 	SwipeBack(Activity activity, int dragMode) {
@@ -690,7 +707,7 @@ public abstract class SwipeBack extends ViewGroup {
 
 		a.recycle();
 
-		mMenuOverlay = new ColorDrawable(0xFF000000);
+		mSwipeBackOverlay = new ColorDrawable(0xFF000000);
 
 		mSwipeBackContainer = new NoClickThroughFrameLayout(context);
 		mSwipeBackContainer.setId(R.id.md__menu);
@@ -713,10 +730,10 @@ public abstract class SwipeBack extends ViewGroup {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		View menu = findViewById(R.id.mdMenu);
-		if (menu != null) {
-			removeView(menu);
-			setSwipeBackView(menu);
+		View swipeBackView = findViewById(R.id.mdMenu);
+		if (swipeBackView != null) {
+			removeView(swipeBackView);
+			setSwipeBackView(swipeBackView);
 		}
 
 		View content = findViewById(R.id.mdContent);
@@ -727,7 +744,7 @@ public abstract class SwipeBack extends ViewGroup {
 
 		if (getChildCount() > 2) {
 			throw new IllegalStateException(
-					"Menu and content view added in xml must have id's @id/mdMenu and @id/mdContent");
+					"swipe back and content view added in xml must have id's @id/mdMenu and @id/mdContent");
 		}
 	}
 
@@ -901,30 +918,32 @@ public abstract class SwipeBack extends ViewGroup {
 	protected abstract void onOffsetPixelsChanged(int offsetPixels);
 
 	/**
-	 * Toggles the menu open and close with animation.
+	 * Toggles the swipe back open and close with animation.
 	 */
 	public SwipeBack toggle() {
 		return toggle(true);
 	}
 
 	/**
-	 * Toggles the menu open and close.
-	 *
-	 * @param animate Whether open/close should be animated.
+	 * Toggles the swipe back open and close.
+	 * 
+	 * @param animate
+	 *            Whether open/close should be animated.
 	 */
 	public abstract SwipeBack toggle(boolean animate);
 
 	/**
-	 * Animates the menu open.
+	 * Animates the swipe back open.
 	 */
 	public SwipeBack open() {
 		return open(true);
 	}
 
 	/**
-	 * Opens the menu.
-	 *
-	 * @param animate Whether open/close should be animated.
+	 * Opens the swipe back.
+	 * 
+	 * @param animate
+	 *            Whether open/close should be animated.
 	 */
 	public abstract SwipeBack open(boolean animate);
 
@@ -974,7 +993,7 @@ public abstract class SwipeBack extends ViewGroup {
 
 
 	/**
-	 * Animates the menu closed.
+	 * Animates the swipe back closed.
 	 */
 	public SwipeBack close() {
 		return close(true);
@@ -989,22 +1008,23 @@ public abstract class SwipeBack extends ViewGroup {
 
 	/**
 	 * Indicates whether the swipe back is currently visible.
-	 *
-	 * @return True if the menu is open, false otherwise.
+	 * 
+	 * @return True if the swipe back is open, false otherwise.
 	 */
 	public abstract boolean isVisible();
 
 	/**
 	 * Set the size of the swipe back when open.
-	 *
-	 * @param size The size of the menu.
+	 * 
+	 * @param size
+	 *            The size of the swipe back.
 	 */
 	public abstract SwipeBack setSize(int size);
 
 	/**
-	 * Returns the size of the menu.
-	 *
-	 * @return The size of the menu.
+	 * Returns the size of the swipe back.
+	 * 
+	 * @return The size of the swipe back.
 	 */
 	public int getSize() {
 		return mSwipeBackViewSize;
@@ -1045,18 +1065,20 @@ public abstract class SwipeBack extends ViewGroup {
 
 
 	/**
-	 * Enables or disables offsetting the menu when dragging the drawer.
-	 *
-	 * @param offsetMenu True to offset the menu, false otherwise.
+	 * Enables or disables offsetting the swipe back when dragging the drawer.
+	 * 
+	 * @param offsetEnabled
+	 *            True to offset the swipe back, false otherwise.
 	 */
-	public abstract void setOffsetMenuEnabled(boolean offsetMenu);
+	public abstract void setOffsetSwipeBackViewEnabled(boolean offsetEnabled);
 
 	/**
-	 * Indicates whether the menu is being offset when dragging the drawer.
-	 *
-	 * @return True if the menu is being offset, false otherwise.
+	 * Indicates whether the swipe back is being offset when dragging the
+	 * drawer.
+	 * 
+	 * @return True if the swipe back is being offset, false otherwise.
 	 */
-	public abstract boolean getOffsetMenuEnabled();
+	public abstract boolean getOffsetSwipeBackEnabled();
 
 	/**
 	 * Get the current state of the drawer.
@@ -1263,8 +1285,8 @@ public abstract class SwipeBack extends ViewGroup {
 
 	/**
 	 * Returns the ViewGroup used as a parent for the swipe back view.
-	 *
-	 * @return The menu view's parent.
+	 * 
+	 * @return The swipe back view's parent.
 	 */
 	public ViewGroup getSwipeBackContainer() {
 		return mSwipeBackContainer;
@@ -1295,7 +1317,7 @@ public abstract class SwipeBack extends ViewGroup {
 				mSwipeBackContainer, false);
 		mSwipeBackContainer.addView(mSwipeBackView);
 
-		notifyMenuViewCreated(mSwipeBackView);
+		notifySwipeBackViewCreated(mSwipeBackView);
 
 		return this;
 	}
@@ -1324,17 +1346,18 @@ public abstract class SwipeBack extends ViewGroup {
 		mSwipeBackContainer.removeAllViews();
 		mSwipeBackContainer.addView(view, params);
 
-		notifyMenuViewCreated(mSwipeBackView);
+		notifySwipeBackViewCreated(mSwipeBackView);
 
 		return this;
 	}
 
 	/**
-	 * Notify the {@link SwipeBackTransformer} that the menu
+	 * Notify the {@link SwipeBackTransformer} that the swipe back has been
+	 * created (inflated and ready to use)
 	 * 
 	 * @param view
 	 */
-	private void notifyMenuViewCreated(View view) {
+	private void notifySwipeBackViewCreated(View view) {
 
 		if (mSwipeBackTransformer != null) {
 			mSwipeBackTransformer.onSwipeBackViewCreated(this, mActivity, view);
@@ -1343,9 +1366,9 @@ public abstract class SwipeBack extends ViewGroup {
 	}
 
 	/**
-	 * Returns the menu view.
-	 *
-	 * @return The menu view.
+	 * Returns the swipe back view.
+	 * 
+	 * @return The swipe back view.
 	 */
 	public View getSwipeBackView() {
 		return mSwipeBackView;

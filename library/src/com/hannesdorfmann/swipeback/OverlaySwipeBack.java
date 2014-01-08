@@ -75,24 +75,24 @@ public class OverlaySwipeBack extends DraggableSwipeBack {
 
 		switch (getPosition()) {
 		case LEFT:
-			mMenuOverlay.setBounds(offsetPixels, 0, width, height);
+			mSwipeBackOverlay.setBounds(offsetPixels, 0, width, height);
 			break;
 
 		case RIGHT:
-			mMenuOverlay.setBounds(0, 0, width + offsetPixels, height);
+			mSwipeBackOverlay.setBounds(0, 0, width + offsetPixels, height);
 			break;
 
 		case TOP:
-			mMenuOverlay.setBounds(0, offsetPixels, width, height);
+			mSwipeBackOverlay.setBounds(0, offsetPixels, width, height);
 			break;
 
 		case BOTTOM:
-			mMenuOverlay.setBounds(0, 0, width, height + offsetPixels);
+			mSwipeBackOverlay.setBounds(0, 0, width, height + offsetPixels);
 			break;
 		}
 
-		mMenuOverlay.setAlpha((int) (MAX_MENU_OVERLAY_ALPHA * openRatio));
-		mMenuOverlay.draw(canvas);
+		mSwipeBackOverlay.setAlpha((int) (MAX_MENU_OVERLAY_ALPHA * openRatio));
+		mSwipeBackOverlay.draw(canvas);
 	}
 
 	@Override

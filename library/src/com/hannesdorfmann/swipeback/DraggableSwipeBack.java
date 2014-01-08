@@ -214,7 +214,7 @@ public abstract class DraggableSwipeBack extends SwipeBack {
 	}
 
 	@Override
-	public void setOffsetMenuEnabled(boolean offsetMenu) {
+	public void setOffsetSwipeBackViewEnabled(boolean offsetMenu) {
 		if (offsetMenu != mOffsetMenu) {
 			mOffsetMenu = offsetMenu;
 			requestLayout();
@@ -223,7 +223,7 @@ public abstract class DraggableSwipeBack extends SwipeBack {
 	}
 
 	@Override
-	public boolean getOffsetMenuEnabled() {
+	public boolean getOffsetSwipeBackEnabled() {
 		return mOffsetMenu;
 	}
 

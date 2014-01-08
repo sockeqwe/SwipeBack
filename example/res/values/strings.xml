@@ -8,6 +8,7 @@
     <string name="slide_activity">Slide Swipe Back</string>
     <string name="viewpager_activity">View Pager</string>
     <string name="overlay_activity">Overlay Swipe Back</string>
+    <string name="drag_content_activity">Drag Content</string>
     
 
 </resources>

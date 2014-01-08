@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.hannesdorfmann.swipeback.example.dragcontent.DragContentActivity;
 import com.hannesdorfmann.swipeback.example.overlay.OverlayActivity;
 import com.hannesdorfmann.swipeback.example.simple.SimpleActivity;
 import com.hannesdorfmann.swipeback.example.slide.SlideActivity;
@@ -31,7 +32,7 @@ public class MainActivity extends ActionBarActivity{
 		String [] menuItems = {
 				"Simple","SlideAnimated",
 				"ViewPager",
-				"Overlay"
+				"Overlay", "Drag Content"
 		};
 
 
@@ -81,9 +82,13 @@ public class MainActivity extends ActionBarActivity{
 					showViewPager();
 					break;
 
-						case 3:
-							showOverlay();
-							break;
+				case 3:
+					showOverlay();
+					break;
+
+				case 4:
+					showDragContent();
+					break;
 				}
 
 			}
@@ -143,6 +148,18 @@ public class MainActivity extends ActionBarActivity{
 					}
 				});
 
+		findViewById(R.id.dragContent).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						showDragContent();
+					}
+				});
+
+	}
+
+	private void showDragContent() {
+		startActivityAnimated(DragContentActivity.class);
 	}
 
 	private void showOverlay() {

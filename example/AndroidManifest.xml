@@ -33,6 +33,11 @@
         <activity android:name="com.hannesdorfmann.swipeback.example.overlay.OverlayActivity"
             android:label="@string/overlay_activity"
             />
+        
+        <activity android:name="com.hannesdorfmann.swipeback.example.dragcontent.DragContentActivity"
+            android:label="@string/drag_content_activity"
+            />
+        
     </application>
 
 </manifest>

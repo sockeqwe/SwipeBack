@@ -1,4 +1,4 @@
-package com.hannesdorfmann.swipeback.example.overlay;
+package com.hannesdorfmann.swipeback.example.dragcontent;
 
 import android.os.Bundle;
 
@@ -8,17 +8,18 @@ import com.hannesdorfmann.swipeback.SwipeBack.Type;
 import com.hannesdorfmann.swipeback.example.R;
 import com.hannesdorfmann.swipeback.example.SwipeBackActivity;
 
-public class OverlayActivity extends SwipeBackActivity {
+public class DragContentActivity extends SwipeBackActivity {
 
 	@Override
 	public void onCreate(Bundle saved) {
 		super.onCreate(saved);
 
 		// Init the swipe back mechanism
-		SwipeBack.attach(this, Type.OVERLAY, Position.LEFT)
-		.setContentView(R.layout.activity_overlay)
-				.setSwipeBackView(R.layout.swipeback_default)
-				.setDividerEnabled(true);
+		SwipeBack
+				.attach(this, Type.BEHIND, Position.LEFT,
+				SwipeBack.DRAG_CONTENT)
+				.setContentView(R.layout.activity_drag_content)
+				.setSwipeBackView(R.layout.swipeback_default);
 
 	}
 }

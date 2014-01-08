@@ -345,7 +345,6 @@ public abstract class SwipeBack extends ViewGroup {
 
 	private Position mResolvedPosition;
 
-	private final Rect mIndicatorClipRect = new Rect();
 
 	protected boolean mIsStatic = false;
 
@@ -744,7 +743,7 @@ public abstract class SwipeBack extends ViewGroup {
 
 		if (getChildCount() > 2) {
 			throw new IllegalStateException(
-					"swipe back and content view added in xml must have id's @id/mdMenu and @id/mdContent");
+					"swipe back and content view added in xml must have id's @id/sbSwipeBackView and @id/sbContent");
 		}
 	}
 
@@ -1627,7 +1626,6 @@ public abstract class SwipeBack extends ViewGroup {
 			dest.writeBundle(mState);
 		}
 
-		@SuppressWarnings("UnusedDeclaration")
 		public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
 			@Override
 			public SavedState createFromParcel(Parcel in) {

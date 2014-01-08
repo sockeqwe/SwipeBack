@@ -2,6 +2,7 @@ package com.hannesdorfmann.swipeback.example;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.hannesdorfmann.swipeback.R;
@@ -15,8 +16,18 @@ public class SwipeBackActivity extends ActionBarActivity{
 	public void onCreate(Bundle saved){
 		super.onCreate(saved);
 
+		Log.d("SwipeBack", "onCreate");
+
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
+
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		Log.d("SwipeBack", "onDestroy");
 
 	}
 

@@ -30,7 +30,7 @@ public class DefaultSwipeBackTransformer implements SwipeBackTransformer {
 
 	@Override
 	public void onSwipeBackCompleted(SwipeBack swipeBack, Activity activity) {
-		activity.onBackPressed();
+		activity.finish();
 		activity.overridePendingTransition(R.anim.swipeback_stack_to_front,
 				R.anim.swipeback_stack_right_out);
 	}

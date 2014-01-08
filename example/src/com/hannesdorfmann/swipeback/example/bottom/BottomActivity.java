@@ -1,4 +1,4 @@
-package com.hannesdorfmann.swipeback.example.bottomxml;
+package com.hannesdorfmann.swipeback.example.bottom;
 
 import android.os.Bundle;
 

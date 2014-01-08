@@ -228,12 +228,6 @@ public abstract class SwipeBack extends ViewGroup {
 	protected int mActivePosition;
 
 	/**
-	 * Used to indicate if the view is in destroying / process, so any swipe
-	 * event should not be delivered to the {@link SwipeBackTransformer}
-	 */
-	protected boolean mDestroying = false;
-
-	/**
 	 * Used when reading the position of the active view.
 	 */
 	protected final Rect mActiveRect = new Rect();
@@ -559,10 +553,11 @@ public abstract class SwipeBack extends ViewGroup {
 
 	private void initSwipeListener() {
 		mOnStateChangeListener = new OnStateChangeListener() {
+
 			@Override
 			public void onStateChanged(int oldState, int newState) {
 
-				if (!mDestroying) {
+				if (!mActivity.isFinishing()) {
 
 					if (mSwipeBackTransformer != null) {
 
@@ -592,7 +587,7 @@ public abstract class SwipeBack extends ViewGroup {
 			@Override
 			public void onSlide(float openRatio, int offsetPixels) {
 
-				if (!mDestroying) {
+				if (!mActivity.isFinishing()) {
 					if (mSwipeBackTransformer != null) {
 						mSwipeBackTransformer.onSwiping(SwipeBack.this,
 								openRatio, offsetPixels);
@@ -1600,7 +1595,6 @@ public abstract class SwipeBack extends ViewGroup {
 
 		Log.d(TAG, "Save instance state");
 
-		mDestroying = true;
 
 		return super.onSaveInstanceState();
 

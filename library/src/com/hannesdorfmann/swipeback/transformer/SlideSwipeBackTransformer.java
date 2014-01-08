@@ -34,7 +34,7 @@ public class SlideSwipeBackTransformer implements SwipeBackTransformer {
 
 	@Override
 	public void onSwipeBackCompleted(SwipeBack swipeBack, Activity activity){
-		activity.onBackPressed();
+		activity.finish();
 		activity.overridePendingTransition(R.anim.swipeback_slide_left_in, R.anim.swipeback_slide_right_out);
 	}
 

@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.hannesdorfmann.swipeback.example.bottomxml.BottomActivity;
+import com.hannesdorfmann.swipeback.example.bottom.BottomActivity;
 import com.hannesdorfmann.swipeback.example.dragcontent.DragContentActivity;
 import com.hannesdorfmann.swipeback.example.overlay.OverlayActivity;
 import com.hannesdorfmann.swipeback.example.simple.SimpleActivity;
@@ -111,7 +111,7 @@ public class MainActivity extends ActionBarActivity{
 		Intent i = new Intent(this, BottomActivity.class);
 		startActivity(i);
 		overridePendingTransition(
-R.anim.swipeback_bottom_in,
+				R.anim.swipeback_bottom_in,
 				R.anim.swipeback_bottom_alpha_out);
 	}
 

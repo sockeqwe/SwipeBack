@@ -1,4 +1,4 @@
-package com.hannesdorfmann.swipeback.example.bottomxml;
+package com.hannesdorfmann.swipeback.example.bottom;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -27,7 +27,7 @@ public class BottomSwipeBackTransformer implements SwipeBackTransformer {
 
 	@Override
 	public void onSwipeBackCompleted(SwipeBack swipeBack, Activity activity) {
-		activity.onBackPressed();
+		activity.finish();
 		activity.overridePendingTransition(R.anim.swipeback_bottom_alpha_in,
 				R.anim.swipeback_bottom_out);
 	}

@@ -1,24 +1,24 @@
 <resources>
 
     <!-- ID used when defining the content layout in XML. -->
-    <item name="mdContent" type="id" />
+    <item name="sbContent" type="id" />
 
-    <!-- ID used when defining the menu layout in XML. -->
-    <item name="mdMenu" type="id" />
+    <!-- ID used when defining the swipe back layout in XML. -->
+    <item name="sbSwipeBackView" type="id" />
 
     <!-- The ID of the content container. -->
-    <item name="md__content" type="id" />
+    <item name="sb__content" type="id" />
 
-    <!-- The ID of the menu container. -->
-    <item name="md__menu" type="id" />
+    <!-- The ID of the Swipe Back container. -->
+    <item name="sb__swipeBackContainer" type="id" />
 
-    <!-- The ID of the drawer. -->
-    <item name="md__drawer" type="id" />
+    <!-- The ID of the swipe back. -->
+    <item name="sb__swipeBack" type="id" />
 
     <!-- Used with View#setTag(int) to specify a position for the active view. -->
-    <item name="mdActiveViewPosition" type="id" />
+    <item name="sbActiveViewPosition" type="id" />
 
-    <item name="md__translationX" type="id" />
+    <item name="sb__translationX" type="id" />
 
-    <item name="md__translationY" type="id" />
+    <item name="sb__translationY" type="id" />
 </resources>

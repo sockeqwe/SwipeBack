@@ -509,7 +509,7 @@ public abstract class SwipeBack extends ViewGroup {
 	public static SwipeBack attach(Activity activity, Type type, Position position, int dragMode, SwipeBackTransformer transformer) {
 
 		SwipeBack swipeBack = createSwipeBack(activity, dragMode, position, type, transformer);
-		swipeBack.setId(R.id.md__drawer);
+		swipeBack.setId(R.id.sb__swipeBack);
 
 
 		switch (dragMode) {
@@ -710,10 +710,10 @@ public abstract class SwipeBack extends ViewGroup {
 		mSwipeBackOverlay = new ColorDrawable(0xFF000000);
 
 		mSwipeBackContainer = new NoClickThroughFrameLayout(context);
-		mSwipeBackContainer.setId(R.id.md__menu);
+		mSwipeBackContainer.setId(R.id.sb__swipeBackContainer);
 
 		mContentContainer = new NoClickThroughFrameLayout(context);
-		mContentContainer.setId(R.id.md__content);
+		mContentContainer.setId(R.id.sb__content);
 
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
 			mContentContainer.setBackgroundDrawable(contentBackground);
@@ -730,13 +730,13 @@ public abstract class SwipeBack extends ViewGroup {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		View swipeBackView = findViewById(R.id.mdMenu);
+		View swipeBackView = findViewById(R.id.sbSwipeBackView);
 		if (swipeBackView != null) {
 			removeView(swipeBackView);
 			setSwipeBackView(swipeBackView);
 		}
 
-		View content = findViewById(R.id.mdContent);
+		View content = findViewById(R.id.sbContent);
 		if (content != null) {
 			removeView(content);
 			setContentView(content);

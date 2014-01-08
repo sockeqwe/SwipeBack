@@ -1127,9 +1127,14 @@ public abstract class SwipeBack extends ViewGroup {
 	}
 
 	/**
-	 * Sets the color of the divider, if you have set the option to use a shadow gradient as divider
-	 *
-	 * @param color The color of the divider shadow.
+	 * Sets the color of the divider, if you have set the option to use a shadow
+	 * gradient as divider
+	 * 
+	 * You must enable the divider by calling
+	 * {@link #setDividerEnabled(boolean)}
+	 * 
+	 * @param color
+	 *            The color of the divider shadow.
 	 */
 	public SwipeBack setDividerAsShadowColor(int color) {
 		GradientDrawable.Orientation orientation = getDividerOrientation();
@@ -1147,8 +1152,8 @@ public abstract class SwipeBack extends ViewGroup {
 	}
 
 	/**
-	 * Sets the drawable of the divider and automatically enables it by calling
-	 * internally {@link #setDividerEnabled(boolean)}
+	 * Sets the drawable of the divider. You must enable the divider by calling
+	 * {@link #setDividerEnabled(boolean)}
 	 * 
 	 * @param drawable
 	 *            The drawable of the divider.
@@ -1156,15 +1161,17 @@ public abstract class SwipeBack extends ViewGroup {
 	public SwipeBack setDivider(Drawable drawable) {
 		mDividerDrawable = drawable;
 		mCustomDivider = drawable != null;
-		setDividerEnabled(true);
 		invalidate();
 		return this;
 	}
 
 	/**
-	 * Sets the drawable resource id of the divider .
-	 *
-	 * @param resId The resource identifier of the the drawable.
+	 * Sets the drawable resource id of the divider . You must enable the
+	 * divider by calling {@link #setDividerEnabled(boolean)}
+	 * 
+	 * @param resId
+	 *            The resource identifier of the the drawable.
+	 * 
 	 */
 	public SwipeBack setDivider(int resId) {
 		return setDivider(getResources().getDrawable(resId));
@@ -1207,8 +1214,9 @@ public abstract class SwipeBack extends ViewGroup {
 	}
 
 	/**
-	 * Draw the divider as solid color (using {@link ColorDrawable}) and
-	 * automatically enables it by calling internally
+	 * Draw the divider as solid color (using {@link ColorDrawable}).
+	 * 
+	 * You must enable the divider by calling
 	 * {@link #setDividerEnabled(boolean)}
 	 * 
 	 * @param color
@@ -1417,6 +1425,12 @@ public abstract class SwipeBack extends ViewGroup {
 			break;
 
 		case SwipeBack.DRAG_WINDOW:
+
+			// mActivity can be null if inflated from xml, so retrieve activity
+			// if (mActivity == null) {
+			// mActivity = (Activity) getContext();
+			// }
+
 			mActivity.setContentView(view, params);
 			break;
 		}
@@ -1500,6 +1514,9 @@ public abstract class SwipeBack extends ViewGroup {
 	 */
 	public SwipeBack setSwipeBackTransformer(SwipeBackTransformer transformer) {
 		mSwipeBackTransformer = transformer;
+		if (mSwipeBackView != null) {
+			notifySwipeBackViewCreated(mSwipeBackView);
+		}
 		return this;
 	}
 

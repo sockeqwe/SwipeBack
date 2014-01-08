@@ -9,6 +9,7 @@
     <string name="viewpager_activity">View Pager</string>
     <string name="overlay_activity">Overlay Swipe Back</string>
     <string name="drag_content_activity">Drag Content</string>
+    <string name="bottom_xml_activity">Bottom from XML</string>
     
 
 </resources>

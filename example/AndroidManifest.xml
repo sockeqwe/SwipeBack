@@ -38,6 +38,10 @@
             android:label="@string/drag_content_activity"
             />
         
+        <activity android:name="com.hannesdorfmann.swipeback.example.bottomxml.BottomActivity"
+            android:label="@string/bottom_xml_activity"
+            />
+        
     </application>
 
 </manifest>

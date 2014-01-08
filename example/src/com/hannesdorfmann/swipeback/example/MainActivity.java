@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.hannesdorfmann.swipeback.example.bottomxml.BottomActivity;
 import com.hannesdorfmann.swipeback.example.dragcontent.DragContentActivity;
 import com.hannesdorfmann.swipeback.example.overlay.OverlayActivity;
 import com.hannesdorfmann.swipeback.example.simple.SimpleActivity;
@@ -32,7 +33,7 @@ public class MainActivity extends ActionBarActivity{
 		String [] menuItems = {
 				"Simple","SlideAnimated",
 				"ViewPager",
-				"Overlay", "Drag Content"
+				"Overlay", "Drag Content", "Bottom"
 		};
 
 
@@ -89,6 +90,10 @@ public class MainActivity extends ActionBarActivity{
 				case 4:
 					showDragContent();
 					break;
+
+				case 5:
+					showBottom();
+					break;
 				}
 
 			}
@@ -100,6 +105,14 @@ public class MainActivity extends ActionBarActivity{
 		startActivity(i);
 		overridePendingTransition(R.anim.swipeback_slide_right_in,
 				R.anim.swipeback_slide_left_out);
+	}
+
+	private void showBottom() {
+		Intent i = new Intent(this, BottomActivity.class);
+		startActivity(i);
+		overridePendingTransition(
+R.anim.swipeback_bottom_in,
+				R.anim.swipeback_bottom_alpha_out);
 	}
 
 	private void showViewPager() {
@@ -156,6 +169,13 @@ public class MainActivity extends ActionBarActivity{
 					}
 				});
 
+		findViewById(R.id.bottom).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						showBottom();
+					}
+				});
 	}
 
 	private void showDragContent() {

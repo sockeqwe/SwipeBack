@@ -53,7 +53,7 @@ public abstract class SwipeBack extends ViewGroup {
 		 * @param offsetPixels
 		 *            Current offset of the menu in pixels.
 		 */
-		void onSlided(float openRatio, int offsetPixels);
+		void onSlide(float openRatio, int offsetPixels);
 	}
 
 	/**
@@ -297,7 +297,13 @@ public abstract class SwipeBack extends ViewGroup {
 	/**
 	 * Listener used to dispatch state change events.
 	 */
-	private OnStateChangeListener mOnDrawerStateChangeListener;
+	private OnStateChangeListener mOnStateChangeListener;
+
+	/**
+	 * An additional {@link OnStateChangeListener} which will be plugged in to
+	 * the internal delegate to allow to observe the internal state from outside
+	 */
+	private OnStateChangeListener mAdditionalOnStateChangeListener;
 
 	/**
 	 * Touch mode for the Drawer.
@@ -536,7 +542,7 @@ public abstract class SwipeBack extends ViewGroup {
 	}
 
 	private void initSwipeListener() {
-		mOnDrawerStateChangeListener = new OnStateChangeListener() {
+		mOnStateChangeListener = new OnStateChangeListener() {
 			@Override
 			public void onStateChanged(int oldState, int newState) {
 
@@ -557,12 +563,18 @@ public abstract class SwipeBack extends ViewGroup {
 								+ SwipeBackTransformer.class.getSimpleName()
 								+ " is registered");
 					}
+
+					// Inform additional listener
+					if (mAdditionalOnStateChangeListener != null) {
+						mAdditionalOnStateChangeListener.onStateChanged(
+								oldState, newState);
+					}
 				}
 
 			}
 
 			@Override
-			public void onSlided(float openRatio, int offsetPixels) {
+			public void onSlide(float openRatio, int offsetPixels) {
 
 				if (!mDestroying) {
 					if (mSwipeBackTransformer != null) {
@@ -573,6 +585,12 @@ public abstract class SwipeBack extends ViewGroup {
 								"Swiping, but no "
 										+ SwipeBackTransformer.class.getSimpleName()
 										+ " is registered");
+					}
+
+					if (mAdditionalOnStateChangeListener != null) {
+						mAdditionalOnStateChangeListener.onSlide(openRatio,
+								offsetPixels);
+
 					}
 				}
 			}
@@ -1388,8 +1406,8 @@ public abstract class SwipeBack extends ViewGroup {
 		if (state != mDrawerState) {
 			final int oldState = mDrawerState;
 			mDrawerState = state;
-			if (mOnDrawerStateChangeListener != null) {
-				mOnDrawerStateChangeListener.onStateChanged(oldState, state);
+			if (mOnStateChangeListener != null) {
+				mOnStateChangeListener.onStateChanged(oldState, state);
 			}
 			if (DEBUG) {
 				logDrawerState(state);
@@ -1472,6 +1490,19 @@ public abstract class SwipeBack extends ViewGroup {
 		return mSwipeBackTransformer;
 	}
 
+	/**
+	 * An additional {@link OnStateChangeListener} which will be plugged in to
+	 * the internal delegate to allow to observe the internal state from outside
+	 * 
+	 * @param listener
+	 *            The {@link OnStateChangeListener} listener
+	 * @return
+	 */
+	public SwipeBack setOnStateChangeListener(OnStateChangeListener listener) {
+		this.mAdditionalOnStateChangeListener = listener;
+		return this;
+	}
+
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	public void postOnAnimation(Runnable action) {
@@ -1493,8 +1524,8 @@ public abstract class SwipeBack extends ViewGroup {
 	}
 
 	protected void dispatchOnDrawerSlide(float openRatio, int offsetPixels) {
-		if (mOnDrawerStateChangeListener != null) {
-			mOnDrawerStateChangeListener.onSlided(openRatio, offsetPixels);
+		if (mOnStateChangeListener != null) {
+			mOnStateChangeListener.onSlide(openRatio, offsetPixels);
 		}
 	}
 
@@ -1514,6 +1545,7 @@ public abstract class SwipeBack extends ViewGroup {
 	void saveState(Bundle state) {
 		// State saving isn't required for subclasses.
 	}
+
 
 	/**
 	 * Restores the state of the drawer.

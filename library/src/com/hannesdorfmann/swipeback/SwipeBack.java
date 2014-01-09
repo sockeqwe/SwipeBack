@@ -551,13 +551,30 @@ public abstract class SwipeBack extends ViewGroup {
 		return drawer;
 	}
 
+	/**
+	 * Determines if the activity has been destroyed or finished. This is useful
+	 * to dertermine if a
+	 * 
+	 * @return
+	 */
+	@SuppressLint("NewApi")
+	protected boolean isActivitiyDestroyed() {
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			return mActivity.isFinishing() || mActivity.isDestroyed();
+		} else {
+			return mActivity.isFinishing();
+		}
+
+	}
+
 	private void initSwipeListener() {
 		mOnStateChangeListener = new OnStateChangeListener() {
 
 			@Override
 			public void onStateChanged(int oldState, int newState) {
 
-				if (!mActivity.isFinishing()) {
+				if (!isActivitiyDestroyed()) {
 
 					if (mSwipeBackTransformer != null) {
 
@@ -587,7 +604,7 @@ public abstract class SwipeBack extends ViewGroup {
 			@Override
 			public void onSlide(float openRatio, int offsetPixels) {
 
-				if (!mActivity.isFinishing()) {
+				if (!isActivitiyDestroyed()) {
 					if (mSwipeBackTransformer != null) {
 						mSwipeBackTransformer.onSwiping(SwipeBack.this,
 								openRatio, offsetPixels);
@@ -1592,9 +1609,6 @@ public abstract class SwipeBack extends ViewGroup {
 
 	@Override
 	protected Parcelable onSaveInstanceState() {
-
-		Log.d(TAG, "Save instance state");
-
 
 		return super.onSaveInstanceState();
 

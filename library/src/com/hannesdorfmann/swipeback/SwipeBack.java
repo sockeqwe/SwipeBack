@@ -228,6 +228,12 @@ public abstract class SwipeBack extends ViewGroup {
 	protected int mActivePosition;
 
 	/**
+	 * Used for storing the previous touch mode, while disabling Swipe Back
+	 * temporarly
+	 */
+	protected int mPreviousTouchMode;
+
+	/**
 	 * Used when reading the position of the active view.
 	 */
 	protected final Rect mActiveRect = new Rect();
@@ -818,6 +824,7 @@ public abstract class SwipeBack extends ViewGroup {
 		mDividerDrawable.draw(canvas);
 	}
 
+
 	protected void updateDividerRect() {
 		// This updates the rect for the static and sliding drawer. The overlay drawer has its own implementation.
 		switch (getPosition()) {
@@ -856,6 +863,23 @@ public abstract class SwipeBack extends ViewGroup {
 	private void setPosition(Position position) {
 		mPosition = position;
 		mResolvedPosition = getPosition();
+	}
+
+	/**
+	 * Disable or enable Touch. You can use this method to disable swipe back
+	 * with a swipe gesture.
+	 * 
+	 * @param enabled
+	 */
+	public void setTouchEnabled(boolean enabled) {
+
+		if (enabled) {
+			setTouchMode(mPreviousTouchMode);
+		} else {
+			mPreviousTouchMode = getTouchMode();
+			setTouchMode(TOUCH_MODE_NONE);
+		}
+
 	}
 
 	protected Position getPosition() {
@@ -1521,6 +1545,10 @@ public abstract class SwipeBack extends ViewGroup {
 	 * Returns the size of the touch bezel in px.
 	 */
 	public abstract int getTouchBezelSize();
+
+	public void disable() {
+
+	}
 
 	/**
 	 * Set the {@link SwipeBackTransformer}

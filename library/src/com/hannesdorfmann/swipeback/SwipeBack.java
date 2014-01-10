@@ -963,12 +963,14 @@ public abstract class SwipeBack extends ViewGroup {
 	 * where the swipe back view is inflated into)
 	 * 
 	 * @param color
+	 *            The color (not resource id)
 	 * @return
 	 */
-	public SwipeBack setSwipeBackViewContainerBackground(int color) {
+	public SwipeBack setSwipeBackContainerBackgroundColor(int color) {
 		mSwipeBackContainer.setBackgroundColor(color);
 		return this;
 	}
+
 
 	/**
 	 * Set the background of the wipe swipe back view container (The container
@@ -994,10 +996,11 @@ public abstract class SwipeBack extends ViewGroup {
 	 * where the swipe back view is inflated into)
 	 * 
 	 * @param resId
-	 *            The resource id of the drawable
+	 *            The resource id of the drawable. Will interanlly call
+	 *            getResources().getDrawable(resId)
 	 * @return
 	 */
-	public SwipeBack setSwipeBackContainerBackgroundDrawanle(int resId) {
+	public SwipeBack setSwipeBackContainerBackgroundDrawable(int resId) {
 		return setSwipeBackContainerBackgroundDrawable(getResources()
 				.getDrawable(resId));
 	}

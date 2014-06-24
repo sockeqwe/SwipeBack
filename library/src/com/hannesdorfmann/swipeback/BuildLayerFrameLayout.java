@@ -1,7 +1,10 @@
 package com.hannesdorfmann.swipeback;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -10,6 +13,9 @@ import android.widget.FrameLayout;
  * <p/>
  * If it's not posted twice the layer either wont be built on start, or it'll be built twice.
  */
+
+@SuppressLint("NewApi")
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 class BuildLayerFrameLayout extends FrameLayout {
 
     private boolean mChanged;
@@ -20,7 +26,7 @@ class BuildLayerFrameLayout extends FrameLayout {
 
     private boolean mFirst = true;
 
-    public BuildLayerFrameLayout(Context context) {
+   public BuildLayerFrameLayout(Context context) {
         super(context);
         if (SwipeBack.USE_TRANSLATIONS) {
             setLayerType(LAYER_TYPE_HARDWARE, null);

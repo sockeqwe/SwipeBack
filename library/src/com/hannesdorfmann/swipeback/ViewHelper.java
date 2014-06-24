@@ -1,10 +1,12 @@
 package com.hannesdorfmann.swipeback;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.view.View;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@SuppressLint("NewApi")
 final class ViewHelper {
 
     private ViewHelper() {
@@ -42,6 +44,7 @@ final class ViewHelper {
         return v.getBottom();
     }
 
+    @SuppressWarnings("")
     public static int getLayoutDirection(View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             return v.getLayoutDirection();

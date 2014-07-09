@@ -8,6 +8,14 @@ Demo
 
 [![See demo video](http://img.youtube.com/vi/T6mbg_wqlkc/0.jpg)](http://www.youtube.com/watch?v=T6mbg_wqlkc)
 
+Building
+========
+SwipeBack is available on maven central
+
+```
+compile 'com.hannesdorfmann:swipeback:1.0.0'
+```
+
 
 How to use it
 =============

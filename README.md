@@ -6,9 +6,14 @@ SwipeBack is for Android Activities to do pretty the same as the android "back-b
 Demo
 ====
 
+[kicker app](https://play.google.com/store/apps/details?id=com.netbiscuits.kicker)
+
+[![Kicker app](http://img.youtube.com/vi/-QgECTWOoa0/0.jpg)](http://www.youtube.com/watch?v=-QgECTWOoa0)
+
 [![See demo video](http://img.youtube.com/vi/T6mbg_wqlkc/0.jpg)](http://www.youtube.com/watch?v=T6mbg_wqlkc)
 
-Building
+
+Dependency
 ========
 SwipeBack is available on maven central
 

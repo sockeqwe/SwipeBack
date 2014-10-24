@@ -17,7 +17,7 @@ Dependency
 ========
 SwipeBack is available on maven central
 
-```
+```groovy
 compile 'com.hannesdorfmann:swipeback:1.0.0'
 ```
 

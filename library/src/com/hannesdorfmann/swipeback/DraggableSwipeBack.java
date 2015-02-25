@@ -178,7 +178,7 @@ public abstract class DraggableSwipeBack extends SwipeBack {
 		super.init(context, attrs, defStyle);
 
 		final ViewConfiguration configuration = ViewConfiguration.get(context);
-		mTouchSlop = configuration.getScaledTouchSlop();
+		mTouchSlop = configuration.getScaledTouchSlop() * 2;
 		mMaxVelocity = configuration.getScaledMaximumFlingVelocity();
 
 		mScroller = new Scroller(context, SwipeBack.SMOOTH_INTERPOLATOR);

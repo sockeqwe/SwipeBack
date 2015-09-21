@@ -5,12 +5,12 @@ repositories {
 }
 
 android {
-  compileSdkVersion 22
-  buildToolsVersion "22.0.1"
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
     minSdkVersion 8
-    targetSdkVersion 22
+    targetSdkVersion rootProject.ext.compileSdkVersion
     versionName project.VERSION_NAME
     versionCode Integer.parseInt(project.VERSION_CODE)
   }

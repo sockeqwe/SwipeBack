@@ -324,11 +324,6 @@ public abstract class SwipeBack extends ViewGroup {
 	private Activity mActivity;
 
 	/**
-	 * Bundle used to hold the drawers state.
-	 */
-	protected Bundle mState;
-
-	/**
 	 * The maximum duration of open/close animations.
 	 */
 	protected int mMaxAnimationDuration = DEFAULT_ANIMATION_DURATION;
@@ -1609,89 +1604,5 @@ public abstract class SwipeBack extends ViewGroup {
 		if (mOnStateChangeListener != null) {
 			mOnStateChangeListener.onSlide(openRatio, offsetPixels);
 		}
-	}
-
-	/**
-	 * Saves the state of the drawer.
-	 *
-	 * @return Returns a Parcelable containing the drawer state.
-	 */
-	public final Parcelable saveState() {
-		if (mState == null) {
-			mState = new Bundle();
-		}
-		saveState(mState);
-		return mState;
-	}
-
-	void saveState(Bundle state) {
-		// State saving isn't required for subclasses.
-	}
-
-
-	/**
-	 * Restores the state of the drawer.
-	 *
-	 * @param in A parcelable containing the drawer state.
-	 */
-	public void restoreState(Parcelable in) {
-		mState = (Bundle) in;
-	}
-
-	@Override
-	protected Parcelable onSaveInstanceState() {
-
-		return super.onSaveInstanceState();
-
-		// Parcelable superState = super.onSaveInstanceState();
-		// SavedState state = new SavedState(superState);
-		//
-		// if (mState == null) {
-		// mState = new Bundle();
-		// }
-		// saveState(mState);
-		//
-		// state.mState = mState;
-		// return state;
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Parcelable state) {
-		SavedState savedState = (SavedState) state;
-		super.onRestoreInstanceState(savedState.getSuperState());
-
-		restoreState(savedState.mState);
-	}
-
-	static class SavedState extends BaseSavedState {
-
-		Bundle mState;
-
-		public SavedState(Parcelable superState) {
-			super(superState);
-		}
-
-		public SavedState(Parcel in) {
-			super(in);
-			mState = in.readBundle();
-		}
-
-		@Override
-		public void writeToParcel(Parcel dest, int flags) {
-			super.writeToParcel(dest, flags);
-			dest.writeBundle(mState);
-		}
-
-		public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
-			@Override
-			public SavedState createFromParcel(Parcel in) {
-				return new SavedState(in);
-			}
-
-			@Override
-			public SavedState[] newArray(int size) {
-				return new SavedState[size];
-			}
-		};
 	}
 }

@@ -639,23 +639,4 @@ public abstract class DraggableSwipeBack extends SwipeBack {
 
 		return 0;
 	}
-
-	@Override
-	void saveState(Bundle state) {
-		final boolean menuVisible = mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING;
-		state.putBoolean(STATE_MENU_VISIBLE, menuVisible);
-	}
-
-	@Override
-	public void restoreState(Parcelable in) {
-		super.restoreState(in);
-		Bundle state = (Bundle) in;
-		final boolean menuOpen = state.getBoolean(STATE_MENU_VISIBLE);
-		if (menuOpen) {
-			open(false);
-		} else {
-			setOffsetPixels(0);
-		}
-		mDrawerState = menuOpen ? STATE_OPEN : STATE_CLOSED;
-	}
 }

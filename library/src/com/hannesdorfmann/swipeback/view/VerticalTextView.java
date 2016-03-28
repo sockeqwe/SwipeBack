@@ -2,12 +2,17 @@ package com.hannesdorfmann.swipeback.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 
 /**
  * Created by Hannes Dorfmann on 04.01.14.
+ *
+ * http://stackoverflow.com/a/7855852
  */
 public class VerticalTextView extends TextView{
     final boolean topDown;
@@ -29,20 +34,24 @@ public class VerticalTextView extends TextView{
     }
 
     @Override
-    protected boolean setFrame(int l, int t, int r, int b){
-        return super.setFrame(l, t, l+(b-t), t+(r-l));
-    }
+    protected void onDraw(Canvas canvas){
+        TextPaint textPaint = getPaint();
+        textPaint.setColor(getCurrentTextColor());
+        textPaint.drawableState = getDrawableState();
 
-    @Override
-    public void draw(Canvas canvas){
+        canvas.save();
+
         if(topDown){
-            canvas.translate(getHeight(), 0);
+            canvas.translate(getWidth(), 0);
             canvas.rotate(90);
         }else {
-            canvas.translate(0, getWidth());
+            canvas.translate(0, getHeight());
             canvas.rotate(-90);
         }
-        canvas.clipRect(0, 0, getWidth(), getHeight(), android.graphics.Region.Op.REPLACE);
-        super.draw(canvas);
+
+        canvas.translate(getCompoundPaddingLeft(), getExtendedPaddingTop());
+
+        getLayout().draw(canvas);
+        canvas.restore();
     }
 }

@@ -598,8 +598,8 @@ public class SlidingSwipeBack extends DraggableSwipeBack {
 
 		 case MotionEvent.ACTION_POINTER_UP:
 			 onPointerUp(ev);
-			 mLastMotionX = ev.getX(ev.findPointerIndex(mActivePointerId));
-			 mLastMotionY = ev.getY(ev.findPointerIndex(mActivePointerId));
+			 mLastMotionX = safeGetX(ev);
+			 mLastMotionY = safeGetY(ev);
 			 break;
 		 }
 
@@ -707,8 +707,8 @@ public class SlidingSwipeBack extends DraggableSwipeBack {
 
 		 case MotionEvent.ACTION_POINTER_UP:
 			 onPointerUp(ev);
-			 mLastMotionX = ev.getX(ev.findPointerIndex(mActivePointerId));
-			 mLastMotionY = ev.getY(ev.findPointerIndex(mActivePointerId));
+			 mLastMotionX = safeGetX(ev);
+			 mLastMotionY = safeGetY(ev);
 			 break;
 		 }
 

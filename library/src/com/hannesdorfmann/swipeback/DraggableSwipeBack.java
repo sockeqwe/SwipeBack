@@ -5,8 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
-
 import com.hannesdorfmann.swipeback.interpolator.PeekInterpolator;
 
 public abstract class DraggableSwipeBack extends SwipeBack {
@@ -638,5 +635,21 @@ public abstract class DraggableSwipeBack extends SwipeBack {
 		}
 
 		return 0;
+	}
+
+	protected float safeGetX(MotionEvent ev) {
+		try {
+			return ev.getX(ev.findPointerIndex(mActivePointerId));
+		} catch (Exception e) {
+			return ev.getX();
+		}
+	}
+
+	protected float safeGetY(MotionEvent ev) {
+		try {
+			return ev.getY(ev.findPointerIndex(mActivePointerId));
+		} catch (Exception e) {
+			return ev.getY();
+		}
 	}
 }

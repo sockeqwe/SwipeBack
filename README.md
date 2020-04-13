@@ -3,6 +3,10 @@ SwipeBack
 
 SwipeBack is for Android Activities to do pretty the same as the android "back-button" will do, but in a really intuitive way by using a swipe gesture
 
+Not Actively Maintained
+=========
+Warning: this project is not actively maintained. It works, but don't expect any future improvements or major bug fixes but I'm willing to merge any Pull Request.
+
 Demo
 ====
 
